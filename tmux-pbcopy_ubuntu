@@ -1,0 +1,8 @@
+#!/bin/sh
+ 
+COPY=`tmux save-buffer -`
+echo "$COPY" | xsel --clipboard --input 
+ 
+# メッセージ表示
+LINES=`echo "$COPY" | wc -l | tr -d ' '`
+tmux display-message "Copy: $LINES lines"
