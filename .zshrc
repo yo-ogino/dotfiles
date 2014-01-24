@@ -198,11 +198,6 @@ esac
 ## Shift-Tab
 bindkey "\e[Z" reverse-menu-complete
 
-## My Aliases
-alias e='emacs'
-alias rmbkr='find . -name "*~" | xargs rm'
-alias rmbk='rm *~'
-
 # カレントディレクトリ短縮表示
 case "$TERM" in
   xterm*|kterm*|rxvt*)
@@ -231,8 +226,10 @@ setopt no_beep
 case "${OSTYPE}" in
   darwin*)
     export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(rbenv init -)"
+    if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 esac
+alias re='rbenv'
+alias ree='rbenv'
 
 # tmux
 alias tm='/usr/local/bin/tmuxx'
@@ -250,3 +247,8 @@ source $ZSH/oh-my-zsh.sh
 alias 'svim'='sudo vim -u $HOME/dotfiles/.vimrc_sudo'
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+# rails
+alias rails='bundle exec rails'
+alias be='bundle exec'
+alias bundleinstall='bundle install --path vendor/bundle'
