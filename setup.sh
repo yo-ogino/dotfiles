@@ -6,8 +6,7 @@ ln -s $DIR/.vimrc $HOME/.vimrc
 ln -s $DIR/.zshrc $HOME/.zshrc
 ln -s $DIR/.gvimrc $HOME/.gvimrc
 ln -s $DIR/.tmux.conf $HOME/.tmux.conf
-rm $HOME/.gitconfig
-ln -s $DIR/.gitconfig $HOME/.gitconfig
+cp $DIR/.gitconfig $HOME/.gitconfig
 
 git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
