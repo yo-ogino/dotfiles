@@ -228,8 +228,8 @@ case "${OSTYPE}" in
     export PATH="$HOME/.rbenv/bin:$PATH"
     if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 esac
-alias re='rbenv'
-alias ree='rbenv'
+alias re='rbenv exec'
+#alias ree='rbenv'
 
 # tmux
 alias tm='/usr/local/bin/tmuxx'
