@@ -251,4 +251,5 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 # rails
 alias rails='bundle exec rails'
 alias be='bundle exec'
-alias bundleinstall='bundle install --path vendor/bundle'
+alias bundleinstall='bundle install --path vendor/bundle --without production'
+

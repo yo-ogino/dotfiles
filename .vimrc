@@ -139,6 +139,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kannokanno/previm'
 Bundle 'ZenCoding.vim'
+Bundle 'vim-scripts/sudo.vim'
 
 filetype plugin indent on
 
