@@ -73,16 +73,6 @@ elseif OSTYPE == "Linux\n"
 endif
 
 "#######################
-" color
-"#######################
-syntax enable
-if system('uname') == "Darwin\n"
-  set background=dark
-  colorscheme solarized
-  "colorscheme molokai
-endif
-
-"#######################
 " syntax 
 "#######################
 let java_highlight_all = 1
@@ -143,6 +133,15 @@ Bundle 'vim-scripts/sudo.vim'
 
 filetype plugin indent on
 
+"#######################
+" color
+"#######################
+syntax enable
+if system('uname') == "Darwin\n"
+  set background=dark
+  colorscheme solarized
+  "colorscheme molokai
+endif
 
 "#######################
 " neocomplcache
