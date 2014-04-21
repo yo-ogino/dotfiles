@@ -238,7 +238,7 @@ alias tm='/usr/local/bin/tmuxx'
 alias mysqlp="mysql --pager='less -S'"
 
 # oh my zsh
-ZSH=$HOME/dotfiles/.oh-my-zsh
+ZSH=$HOME/.oh-my-zsh
 plugins=(git)
 export ZSH_THEME="wedisagree"
 source $ZSH/oh-my-zsh.sh
