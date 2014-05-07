@@ -17,7 +17,6 @@ set cursorline
 "#######################
 syntax on "カラー表示
 set smartindent "オートインデント
-" tab関連
 set expandtab "タブの代わりに空白文字挿入
 set ts=2 sw=2 sts=0 "タブは半角4文字分のスペース
 " ファイルを開いた際に、前回終了時の行で起動
@@ -99,37 +98,40 @@ noremap <C-l> $
 "#######################
 "Bundle
 "#######################
-filetype off                   " required!
+filetype plugin indent off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  call neobundle#rc(expand('~/.vim/bundle/'))
+endif
 
 " let Vundle manage Vundle
 " required! 
-Bundle 'gmarik/vundle'
+"Bundle 'gmarik/vundle'
 
 "" My Bundles here:
 ""
 "" original repos on github
-Bundle 'pangloss/vim-javascript'
-Bundle 'scrooloose/syntastic'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'thinca/vim-quickrun'
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/neosnippet'
-Bundle 'ZenCoding.vim'
-Bundle 'surround.vim'
+NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'ZenCoding.vim'
+NeoBundle 'surround.vim'
 "Bundle 'qtmplsel.vim'
-Bundle 'tyru/vim-altercmd'
-Bundle 'Shougo/unite.vim'
-Bundle 'Shougo/vimproc'
-Bundle 'scala.vim'
-Bundle 'majutsushi/tagbar'
-Bundle 'scrooloose/nerdtree'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'kannokanno/previm'
-Bundle 'ZenCoding.vim'
-Bundle 'vim-scripts/sudo.vim'
+NeoBundle 'tyru/vim-altercmd'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimproc'
+NeoBundle 'scala.vim'
+NeoBundle 'majutsushi/tagbar'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'ZenCoding.vim'
+NeoBundle 'vim-scripts/sudo.vim'
 
 filetype plugin indent on
 
@@ -268,7 +270,6 @@ endif
 
 " Enable snipMate compatibility feature.
 " let g:neosnippet#enable_snipmate_compatibility = 1
-
 
 "#######################
 " vim-ref 

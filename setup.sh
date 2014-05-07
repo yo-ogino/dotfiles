@@ -10,7 +10,8 @@ ln -s $DIR/.tmux.conf $HOME/.tmux.conf
 #rm $HOME/.gitconfig
 #cp $DIR/.gitconfig $HOME/.gitconfig
 
-git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+#git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim
 git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
 sudo cp tmuxx /usr/local/bin/
