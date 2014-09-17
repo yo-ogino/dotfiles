@@ -140,7 +140,7 @@ filetype plugin indent on
 "#######################
 syntax enable
 if system('uname') == "Darwin\n"
-  set background=dark
+  set background=light
   colorscheme solarized
   "colorscheme molokai
 endif

@@ -222,14 +222,12 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # ビープ音なし
 setopt no_beep
 
-# ruby
-case "${OSTYPE}" in
-  darwin*)
-    export PATH="$HOME/.rbenv/bin:$PATH"
-    if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-esac
+# rvenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
 alias re='rbenv exec'
-#alias ree='rbenv'
+alias be='bundle exec'
 
 # tmux
 alias tm='/usr/local/bin/tmuxx'
@@ -246,10 +244,10 @@ source $ZSH/oh-my-zsh.sh
 # for sudo vim
 alias 'svim'='sudo vim -u $HOME/dotfiles/.vimrc_sudo'
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
 # rails
 alias rails='bundle exec rails'
-alias be='bundle exec'
-alias bundleinstall='bundle install --path vendor/bundle --without production'
+alias bundleinstall='bundle install --path vendor/bundle'
+
+# nodebrew
+PATH=$HOME/.nodebrew/current/bin:$PATH
 
