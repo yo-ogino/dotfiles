@@ -246,8 +246,13 @@ alias 'svim'='sudo vim -u $HOME/dotfiles/.vimrc_sudo'
 
 # rails
 alias rails='bundle exec rails'
+alias rake='bundle exec rake'
 alias bundleinstall='bundle install --path vendor/bundle'
 
 # nodebrew
 PATH=$HOME/.nodebrew/current/bin:$PATH
 
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+alias ssh='TERM=screen ssh'
