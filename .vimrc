@@ -63,6 +63,7 @@ set termencoding=utf-8
 set formatoptions=l
 set nobackup
 set noswapfile
+set noundofile
 
 let OSTYPE = system('uname')
 if OSTYPE == "Darwin\n"
