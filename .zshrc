@@ -256,3 +256,5 @@ PATH=$HOME/.nodebrew/current/bin:$PATH
 export PATH="/usr/local/heroku/bin:$PATH"
 
 alias ssh='TERM=screen ssh'
+
+[ -f ~/.zshrc.personal ] && source ~/.zshrc.personal
