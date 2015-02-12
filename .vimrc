@@ -30,6 +30,7 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'kana/vim-submode'
 
 call neobundle#end()
 filetype plugin indent on
@@ -38,14 +39,6 @@ NeoBundleCheck
 "#######################
 " unite
 "#######################
-nnoremap    [unite]   <Nop>
-nmap    <Space>u [unite]
-nnoremap [unite]u  :<C-u>Unite -no-split<Space>
-nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir file<CR>
-nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
-nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
-nnoremap <silent> ,vr :UniteResume<CR>
-
 "#######################
 " 表示系
 "#######################
@@ -134,3 +127,38 @@ inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 noremap <C-h> ^
 noremap <C-l> $
+nnoremap s <Nop>
+nnoremap sj <C-w>j
+nnoremap sk <C-w>k
+nnoremap sl <C-w>l
+nnoremap sh <C-w>h
+nnoremap sJ <C-w>J
+nnoremap sK <C-w>K
+nnoremap sL <C-w>L
+nnoremap sH <C-w>H
+nnoremap sn gt
+nnoremap sp gT
+nnoremap sr <C-w>r
+nnoremap s= <C-w>=
+nnoremap sw <C-w>w
+nnoremap so <C-w>_<C-w>|
+nnoremap sO <C-w>=
+nnoremap sN :<C-u>bn<CR>
+nnoremap sP :<C-u>bp<CR>
+nnoremap st :<C-u>tabnew<CR>
+nnoremap sT :<C-u>Unite tab<CR>
+nnoremap ss :<C-u>sp<CR>
+nnoremap sv :<C-u>vs<CR>
+nnoremap sq :<C-u>q<CR>
+nnoremap sQ :<C-u>bd<CR>
+nnoremap    [unite]   <Nop>
+nnoremap suf :<C-u>UniteWithBufferDir file<CR>
+nnoremap sum :<C-u>Unite<Space>file_mru<CR>
+call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
+call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
+call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
+call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
+call submode#map('bufmove', 'n', '', '>', '<C-w>>')
+call submode#map('bufmove', 'n', '', '<', '<C-w><')
+call submode#map('bufmove', 'n', '', '+', '<C-w>+')
+call submode#map('bufmove', 'n', '', '-', '<C-w>-')
