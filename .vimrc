@@ -24,21 +24,20 @@ NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ZenCoding.vim'
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'pangloss/vim-javascript'
+"NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'kana/vim-submode'
+NeoBundle 'jiangmiao/simple-javascript-indenter'
+NeoBundle 'jelera/vim-javascript-syntax'
 
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
 
-"#######################
-" unite
-"#######################
 "#######################
 " 表示系
 "#######################
