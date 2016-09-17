@@ -223,7 +223,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 setopt no_beep
 
 # rvenv
-export PATH="$HOME/.rbenv/bin:$PATH"
+ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 alias re='rbenv exec'
@@ -258,3 +258,10 @@ export PATH="/usr/local/heroku/bin:$PATH"
 alias ssh='TERM=screen ssh'
 
 [ -f ~/.zshrc.personal ] && source ~/.zshrc.personal
+
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+
+export GOPATH=$HOME/.go
+
+eval "$(hub alias -s)"
+
