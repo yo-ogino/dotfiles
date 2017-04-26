@@ -265,3 +265,41 @@ export GOPATH=$HOME/.go
 
 eval "$(hub alias -s)"
 
+# git
+function prf () {
+  git fetch -f upstream pull/$1/head:pr$1
+  git co pr$1
+}
+
+function psg () {
+  ps aux | grep $1
+}
+
+function ssh_tunnels () {
+  psg '[s]sh.\+-L'
+}
+
+function kill_ssh_tunnels () {
+  psg "[s]sh.\+-L $1" | awk '{print $2}' | xargs kill
+}
+
+# bookmeter deploy
+# $1: application (ex: www)
+# $2: environment (ex: dev)
+# $3: tag (ex: dev-20170322-2042)
+function bm_deploy () {
+  if [ $1 = 'www' ]; then
+    repo=bookmeter_frontend
+  else
+    repo=bookmeter_backend
+  fi
+  git fetch --all
+  git co deploy/bkmtr-$1/$2
+  git reset --hard upstream/deploy/bkmtr-$1/$2
+  git co -b $1/$2/$3
+  sed -E -i '' "s/$repo:.+\"/$repo:$3\"/g" bkmtr-$1/Dockerrun.aws.json
+  git add .
+  git commit -m "Deploy $3 to $1/$2"
+  git push origin $1/$2/$3
+}
+
