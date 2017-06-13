@@ -288,10 +288,6 @@ function kill_ssh_tunnels () {
   psg "[s]sh.\+-L $1" | awk '{print $2}' | xargs kill
 }
 
-function bm_release_tag () {
-  tag="$1-$(date +'%Y%m%d-%H%M')"
-  git tag -s -m $tag $tag
-  git push upstream $tag
-  echo $tag | pbcopy
-}
+[ -f ~/.zshrc.office ] && source ~/.zshrc.office
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
