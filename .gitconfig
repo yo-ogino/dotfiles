@@ -1,5 +1,5 @@
 [user]
-  name = o-nigo
+  name = yo_ogino 
   email = ogy415@gmail.com
 [color]
   ui = auto
@@ -7,6 +7,7 @@
   editor = vim
   autocrlf = false
   safecrlf = true
+  excludesfile = ~/.gitignore_global
 [alias]
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   type = cat-file -t
@@ -21,3 +22,11 @@
   d = diff
   l = log
   br = branch
+  delete-merged-branches = !git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %
+[gpg]
+  program = gpg
+[http]
+  postBuffer = 524288000
+[includeIf "gitdir:~/dw/"]
+  path = ~/.gitconfig_dw
+
