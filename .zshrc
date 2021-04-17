@@ -1,6 +1,7 @@
 [ -f ~/.zprezto/runcoms/zshrc ] && source ~/.zprezto/runcoms/zshrc
 
 export LANG=ja_JP.UTF-8
+export EDITOR=vim
 
 # MacVim
 case "${OSTYPE}" in
@@ -27,6 +28,8 @@ SAVEHIST=10000
 setopt hist_ignore_dups     # ignore duplication command history list
 setopt share_history        # share command history data
 
+setopt nonomatch
+
 # Ruby
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
@@ -43,14 +46,25 @@ PATH=$HOME/.nodebrew/current/bin:$PATH
 # Java
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
-### go
+# go
 export PATH="$HOME/.goenv/bin:$PATH"
 eval "$(goenv init -)"
 export GOPATH=$HOME/.go
 PATH=$PATH:$GOPATH/bin
 
+# phpenv
+export PATH="$HOME/.phpenv/bin:$PATH"
+eval "$(phpenv init -)"
+
+# Python
+export PATH="$HOME/Library/Python/3.7/bin:$PATH"
+
 # Github
 eval "$(hub alias -s)"
+
+# ant
+export ANT_HOME="/usr/local/bin/ant/"
+export PATH="$PATH:$ANT_HOME/bin"
 
 function prf () {
   git fetch -f upstream pull/$1/head:pr$1
@@ -77,3 +91,5 @@ function kill_ssh_tunnels () {
 [ -f ~/.zshrc.office ] && source ~/.zshrc.office
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
+export PATH="$HOME/.nodenv/bin:$PATH"
+eval "$(nodenv init -)"
