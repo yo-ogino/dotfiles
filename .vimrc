@@ -1,4 +1,36 @@
 "#######################
+" plugin
+"#######################
+if &compatible
+  set nocompatible               " Be iMproved
+endif
+
+" Required:
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+
+" Required:
+call dein#begin('~/.cache/dein')
+
+" Let dein manage dein
+" Required:
+call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
+
+" Add or remove your plugins here like this:
+call dein#add('altercation/vim-colors-solarized')
+call dein#add('thinca/vim-quickrun')
+
+" Required:
+call dein#end()
+
+" Required:
+filetype plugin indent on
+syntax enable
+
+if dein#check_install()
+  call dein#install()
+endif
+
+"#######################
 " 表示系
 "#######################
 set number "行番号表示
@@ -11,6 +43,7 @@ set laststatus=0 "ステータスラインを常に表示
 syntax enable
 if system('uname') == "Darwin\n"
   set background=light
+  colorscheme solarized
 endif
 
 "#######################
@@ -111,3 +144,4 @@ nnoremap sQ :<C-u>bd<CR>
 nnoremap    [unite]   <Nop>
 nnoremap suf :<C-u>UniteWithBufferDir file<CR>
 nnoremap sum :<C-u>Unite<Space>file_mru<CR>
+
