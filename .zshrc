@@ -4,11 +4,11 @@ export LANG=ja_JP.UTF-8
 export EDITOR=vim
 
 # MacVim
-case "${OSTYPE}" in
-  darwin*)
-    alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-    alias vim='env_LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-esac
+#case "${OSTYPE}" in
+#  darwin*)
+#    alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+#    alias vim='env_LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+#esac
 
 # historical backward/forward search with linehead string binded to ^P/^N
 #
@@ -53,8 +53,8 @@ export GOPATH=$HOME/.go
 PATH=$PATH:$GOPATH/bin
 
 # phpenv
-export PATH="$HOME/.phpenv/bin:$PATH"
-eval "$(phpenv init -)"
+#export PATH="$HOME/.phpenv/bin:$PATH"
+#eval "$(phpenv init -)"
 
 # Python
 export PATH="$HOME/Library/Python/3.7/bin:$PATH"

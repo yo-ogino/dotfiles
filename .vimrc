@@ -1,44 +1,4 @@
 "#######################
-"NeoBundle
-"#######################
-if has('vim_starting')
-  if &compatible
-    set nocompatible
-  endif
-
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc', {
-  \ 'build' : {
-    \ 'windows' : 'make -f make_mingw32.mak',
-    \ 'cygwin' : 'make -f make_cygwin.mak',
-    \ 'mac' : 'make -f make_mac.mak',
-    \ 'unix' : 'make -f make_unix.mak',
-  \ },
-\ }
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'ZenCoding.vim'
-NeoBundle 'scrooloose/nerdtree'
-"NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'kana/vim-submode'
-NeoBundle 'jiangmiao/simple-javascript-indenter'
-NeoBundle 'jelera/vim-javascript-syntax'
-
-call neobundle#end()
-filetype plugin indent on
-NeoBundleCheck
-
-"#######################
 " 表示系
 "#######################
 set number "行番号表示
@@ -51,8 +11,6 @@ set laststatus=0 "ステータスラインを常に表示
 syntax enable
 if system('uname') == "Darwin\n"
   set background=light
-  colorscheme solarized
-  "colorscheme molokai
 endif
 
 "#######################
@@ -153,11 +111,3 @@ nnoremap sQ :<C-u>bd<CR>
 nnoremap    [unite]   <Nop>
 nnoremap suf :<C-u>UniteWithBufferDir file<CR>
 nnoremap sum :<C-u>Unite<Space>file_mru<CR>
-call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
-call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
-call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
-call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
-call submode#map('bufmove', 'n', '', '>', '<C-w>>')
-call submode#map('bufmove', 'n', '', '<', '<C-w><')
-call submode#map('bufmove', 'n', '', '+', '<C-w>+')
-call submode#map('bufmove', 'n', '', '-', '<C-w>-')
