@@ -44,7 +44,7 @@ alias bundleinstall='bundle install --path vendor/bundle'
 PATH=$HOME/.nodebrew/current/bin:$PATH
 
 # Java
-export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+#export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
 # go
 export PATH="$HOME/.goenv/bin:$PATH"
@@ -65,6 +65,9 @@ eval "$(hub alias -s)"
 # ant
 export ANT_HOME="/usr/local/bin/ant/"
 export PATH="$PATH:$ANT_HOME/bin"
+
+# MySQL
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
 function prf () {
   git fetch -f upstream pull/$1/head:pr$1
@@ -93,3 +96,13 @@ function kill_ssh_tunnels () {
 
 export PATH="$HOME/.nodenv/bin:$PATH"
 eval "$(nodenv init -)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/yo_ogino/.sdkman"
+[[ -s "/Users/yo_ogino/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/yo_ogino/.sdkman/bin/sdkman-init.sh"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/completion.zsh.inc'; fi
