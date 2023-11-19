@@ -3,13 +3,6 @@
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
 
-# MacVim
-#case "${OSTYPE}" in
-#  darwin*)
-#    alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-#    alias vim='env_LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-#esac
-
 # historical backward/forward search with linehead string binded to ^P/^N
 #
 autoload history-search-end
@@ -29,6 +22,9 @@ setopt hist_ignore_dups     # ignore duplication command history list
 setopt share_history        # share command history data
 
 setopt nonomatch
+
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Ruby
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -68,6 +64,7 @@ export PATH="$PATH:$ANT_HOME/bin"
 
 # MySQL
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
 
 function prf () {
   git fetch -f upstream pull/$1/head:pr$1

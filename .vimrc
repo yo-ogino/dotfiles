@@ -1,30 +1,54 @@
 "#######################
-" plugin
+" plugin(dein)
 "#######################
-if &compatible
-  set nocompatible               " Be iMproved
+let $CACHE = expand('~/.cache')
+if !($CACHE->isdirectory())
+  call mkdir($CACHE, 'p')
+endif
+if &runtimepath !~# '/dein.vim'
+  let s:dir = 'dein.vim'->fnamemodify(':p')
+  if !(s:dir->isdirectory())
+    let s:dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'
+    if !(s:dir->isdirectory())
+      execute '!git clone https://github.com/Shougo/dein.vim' s:dir
+    endif
+  endif
+  execute 'set runtimepath^='
+        \ .. s:dir->fnamemodify(':p')->substitute('[/\\]$', '', '')
 endif
 
-" Required:
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+set nocompatible
 
-" Required:
-call dein#begin('~/.cache/dein')
+" Set dein base path (required)
+let s:dein_base = '~/.cache/dein/'
 
-" Let dein manage dein
-" Required:
-call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
+" Set dein source path (required)
+let s:dein_src = '~/.cache/dein/repos/github.com/Shougo/dein.vim'
 
-" Add or remove your plugins here like this:
+" Set dein runtime path (required)
+execute 'set runtimepath+=' .. s:dein_src
+
+" Call dein initialization (required)
+call dein#begin(s:dein_base)
+
+call dein#add(s:dein_src)
+
+" Your plugins go here:
 call dein#add('altercation/vim-colors-solarized')
 call dein#add('thinca/vim-quickrun')
 
-" Required:
+" Finish dein initialization (required)
 call dein#end()
 
-" Required:
-filetype plugin indent on
-syntax enable
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+filetype indent plugin on
+
+" Enable syntax highlighting
+if has('syntax')
+  syntax on
+endif
 
 if dein#check_install()
   call dein#install()
@@ -42,7 +66,7 @@ set showmatch "括弧入力時の対応する括弧を表示
 set laststatus=0 "ステータスラインを常に表示
 syntax enable
 if system('uname') == "Darwin\n"
-  set background=light
+  set background=dark
   colorscheme solarized
 endif
 
