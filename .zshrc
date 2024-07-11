@@ -65,6 +65,9 @@ export PATH="$PATH:$ANT_HOME/bin"
 # MySQL
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
+function la () {
+  ls -la
+}
 
 function prf () {
   git fetch -f upstream pull/$1/head:pr$1

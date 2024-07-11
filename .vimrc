@@ -35,6 +35,7 @@ call dein#add(s:dein_src)
 
 " Your plugins go here:
 call dein#add('altercation/vim-colors-solarized')
+call dein#add('morhetz/gruvbox')
 call dein#add('thinca/vim-quickrun')
 
 " Finish dein initialization (required)
@@ -66,8 +67,9 @@ set showmatch "括弧入力時の対応する括弧を表示
 set laststatus=0 "ステータスラインを常に表示
 syntax enable
 if system('uname') == "Darwin\n"
-  set background=dark
-  colorscheme solarized
+  set termguicolors
+  set background=light
+  colorscheme gruvbox
 endif
 
 "#######################
