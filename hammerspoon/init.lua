@@ -11,7 +11,7 @@ local KeyCode = {
   J = hs.keycodes.map["j"],
   K = hs.keycodes.map["k"],
   L = hs.keycodes.map["l"],
-  CMD = 104
+  I = hs.keycodes.map["i"]
 }
 
 mouseKeysPressed = {
@@ -50,9 +50,9 @@ local function getMouseKeyName(keyCode)
     return "LEFT_CLICK"
   elseif keyCode == KeyCode.K then
     return "RIGHT_CLICK"
-  elseif keyCode == KeyCode.L then
+  elseif keyCode == KeyCode.I then
     return "MIDDLE_CLICK"
-  elseif keyCode == KeyCode.CMD then
+  elseif keyCode == KeyCode.L then
     return "SPEEDUP"
   else
     return nil
@@ -61,16 +61,7 @@ end
 
 -- MouseKeyが押されたときに状態を更新する
 local function updateMouseKeysPressed(event)
-  local keyCode = event:getKeyCode()
-  local mouseKeyName = getMouseKeyName(keyCode)
-  local flags = event:getFlags()
-
-
-  if flags.cmd then
-    mouseKeysPressed.SPEEDUP = true
-  else
-    mouseKeysPressed.SPEEDUP = false
-  end
+  local mouseKeyName = getMouseKeyName(event:getKeyCode())
 
   if mouseKeyName ~= nil then
     if event:getType() == hs.eventtap.event.types.keyDown then
@@ -79,27 +70,13 @@ local function updateMouseKeysPressed(event)
       mouseKeysPressed[mouseKeyName] = false
     end
   end
-
-  if mouseKeyName == "SPEEDUP" then
-    log.d('keyCode: ' .. tostring(keyCode))
-    log.d('mouseKeyName: ' .. tostring(mouseKeyName))
-    log.d('flags: ' .. hs.inspect(flags))
-    log.d('event:getType(): ' .. tostring(event:getType()))
-    log.d('mouseKeysPressed: ' .. hs.inspect(mouseKeysPressed))
-  end
-
 end
 
 -- いずれかのMouseKeyが押されているか
 local function isAnyMouseKeyPressed(event)
   local mouseKeyName = getMouseKeyName(event:getKeyCode())
-  local flags = event:getFlags()
 
   if mouseKeyName ~= nil and event:getType() == hs.eventtap.event.types.keyDown then
-    return true
-  end
-
-  if flags.cmd then
     return true
   end
 
@@ -218,8 +195,9 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
     updateMouseKeysPressed(event)
 
     if repeating == 0 then
+      local key = getMouseKeyName(keyCode)
       -- 左クリック
-      if keyCode == KeyCode.J then
+      if key == "LEFT_CLICK" then
         if keyPressed then
           log.d('Left click')
           hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, hs.mouse.absolutePosition()):post()
@@ -229,7 +207,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
         end
 
       -- 右クリック
-      elseif keyCode == KeyCode.K then
+      elseif key == "RIGHT_CLICK" then
         if keyPressed then
           hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.rightMouseDown, hs.mouse.absolutePosition()):post()
         else
@@ -237,7 +215,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
         end
 
       -- ホイールクリック
-      elseif keyCode == KeyCode.L then
+      elseif key == "MIDDLE_CLICK" then
         if keyPressed then
           hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseDown, hs.mouse.absolutePosition(), 2):post()
         else
