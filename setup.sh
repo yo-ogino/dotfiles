@@ -9,6 +9,8 @@ ln -s $DIR/.tmux.conf $HOME/.tmux.conf
 ln -s $DIR/.gitconfig $HOME/.gitconfig
 ln -s $DIR/Brewfile $HOME/Brewfile
 
+# todo aerospaceとhammerspoonのinitをlnする
+
 #git clone --recursive https://github.com/yo-ogino/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
 #sudo cp tmuxx /usr/local/bin/

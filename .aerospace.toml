@@ -1,0 +1,8 @@
+start-at-login = true
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+key-mapping.preset = 'qwerty'
+
+[mode.main.binding]
+# Define in skhd
