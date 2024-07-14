@@ -46,13 +46,15 @@ mouseKeysPressed = {
   MOVE_CENTER = false
 }
 
-local initialMouseSpeed = 2
-local maxMouseSpeed = 14
-local accelarationRate = 1.04
-local mouseSpeedUpRate = 2.4
-local mouseSpeed = initialMouseSpeed
-local scrollSpeed = 12
-local scrollSpeedUpRate = 4
+local MouseProp = {
+  INITIAL_SPEED = 2,
+  MAX_SPEED = 14,
+  ACCELARATION_RATE = 1.04,
+  SPEED_UP_RATE = 2.4,
+  SCROLL_SPEED = 12,
+  SCROLL_SPEED_UP_RATE = 4
+}
+local mouseSpeed = MouseProp.INITIAL_SPEED
 
 -- keyCodeからマウスのキー名を取得する
 local function getMouseKeyName(keyCode)
@@ -136,7 +138,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
   end
 
   if mouseKeysPressed.SCROLL then
-    local d = mouseKeysPressed.SPEEDUP and scrollSpeed * scrollSpeedUpRate or scrollSpeed
+    local d = mouseKeysPressed.SPEEDUP and MouseProp.SCROLL_SPEED * MouseProp.SCROLL_SPEED_UP_RATE or MouseProp.SCROLL_SPEED
 
     if mouseKeysPressed.UP then
       hs.eventtap.event.newScrollEvent({0, -d}, {}, 'pixel'):post()
@@ -153,7 +155,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
   else
     local currentPos = hs.mouse.absolutePosition()
     local isCursorPressed = false
-    local d = mouseKeysPressed.SPEEDUP and mouseSpeed * mouseSpeedUpRate or mouseSpeed
+    local d = mouseKeysPressed.SPEEDUP and mouseSpeed * MouseProp.SPEED_UP_RATE or mouseSpeed
 
     if mouseKeysPressed.UP then
       currentPos.y = currentPos.y - d
@@ -172,10 +174,10 @@ local moveMouseTimer = hs.timer.new(0.01, function()
       isCursorPressed = true
     end
 
-    if mouseSpeed <= maxMouseSpeed and isCursorPressed then
-      mouseSpeed = mouseSpeed * accelarationRate
-    elseif mouseSpeed > initialMouseSpeed and isCursorPressed == false then
-        mouseSpeed = initialMouseSpeed
+    if mouseSpeed <= MouseProp.MAX_SPEED and isCursorPressed then
+      mouseSpeed = mouseSpeed * MouseProp.ACCELARATION_RATE
+    elseif mouseSpeed > MouseProp.INITIAL_SPEED and isCursorPressed == false then
+        mouseSpeed = MouseProp.INITIAL_SPEED
     end
 
     hs.mouse.absolutePosition(currentPos)
@@ -210,7 +212,7 @@ local function resetMouseMode()
   mode = Mode.NORMAL
   moveMouseTimer:stop()
   mouseFocusTimer:stop()
-  mouseSpeed = initialMouseSpeed
+  mouseSpeed = MouseProp.INITIAL_SPEED
   for key in pairs(mouseKeysPressed) do
     mouseKeysPressed[key] = false
   end
@@ -261,7 +263,6 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   -- キー入力タイマーが有効なときにマウスキーが押されたらマウスモードに移行する
   elseif mouseKeyWaitTimer ~= nil then
     if isAnyMouseKeyPressed(event) and mode ~= Mode.MOUSE_MOVE then
-      updateMouseKeysPressed(event)
       mode = Mode.MOUSE_MOVE
       log.d('# Mouse mode')
       moveMouseTimer:start()
