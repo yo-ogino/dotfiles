@@ -110,9 +110,8 @@ local moveMouseTimer = hs.timer.new(0.01, function()
     if mouseKeysPressed.RIGHT then
       hs.eventtap.event.newScrollEvent({d, 0}, {}, 'pixel'):post()
     end
-
   else
-    local currentPos = hs.mouse.getAbsolutePosition()
+    local currentPos = hs.mouse.absolutePosition()
     local isCursorPressed = false
     local d = mouseKeysPressed.SPEEDUP and mouseSpeed * mouseSpeedUpRate or mouseSpeed
 
@@ -139,13 +138,31 @@ local moveMouseTimer = hs.timer.new(0.01, function()
         mouseSpeed = initialMouseSpeed
     end
 
-    hs.mouse.setAbsolutePosition(currentPos)
+    hs.mouse.absolutePosition(currentPos)
 
     -- 左クリック中はドラッグイベントを発生させる
     if mouseKeysPressed.LEFT_CLICK then
       hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDragged, hs.mouse.absolutePosition()):post()
     end
   end
+end)
+
+local mouseFocusTimer = hs.timer.new(0.5, function()
+    local mousePoint = hs.mouse.absolutePosition()
+
+    local window = nil
+    local windows = hs.window.orderedWindows()
+
+    for _, win in ipairs(windows) do
+      if hs.geometry.point(mousePoint):inside(win:frame()) then
+        window = win
+        break
+      end
+    end
+
+    if window then
+      window:focus()
+    end
 end)
 
 local mouseKeyWaitTimer = nil
@@ -173,6 +190,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
       -- セミコロンが離されたとき、全ての状態をリセットする
       mode = Mode.NORMAL
       moveMouseTimer:stop()
+      mouseFocusTimer:stop()
       if mouseKeyWaitTimer then
         mouseKeyWaitTimer:stop()
         mouseKeyWaitTimer = nil
@@ -197,6 +215,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
       mode = Mode.MOUSE_MOVE
       log.d('# Mouse mode')
       moveMouseTimer:start()
+      mouseFocusTimer:start()
 
       hs.alert.show("Mouse mode", 1)
     end
