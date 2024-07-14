@@ -21,7 +21,12 @@ local KeyCode = {
   J = hs.keycodes.map["j"],
   K = hs.keycodes.map["k"],
   L = hs.keycodes.map["l"],
-  I = hs.keycodes.map["i"]
+  I = hs.keycodes.map["i"],
+  W = hs.keycodes.map["w"],
+  X = hs.keycodes.map["x"],
+  R = hs.keycodes.map["r"],
+  V = hs.keycodes.map["v"],
+  C = hs.keycodes.map["c"]
 }
 
 mouseKeysPressed = {
@@ -33,12 +38,17 @@ mouseKeysPressed = {
   LEFT_CLICK = false,
   RIGHT_CLICK = false,
   MIDDLE_CLICK = false,
-  SPEEDUP = false
+  SPEEDUP = false,
+  MOVE_TOPLEFT = false,
+  MOVE_TOPRIGHT = false,
+  MOVE_BOTTOMLEFT = false,
+  MOVE_BOTTOMRIGHT = false,
+  MOVE_CENTER = false
 }
 
 local initialMouseSpeed = 2
-local maxMouseSpeed = 16
-local accelarationRate = 1.03
+local maxMouseSpeed = 14
+local accelarationRate = 1.04
 local mouseSpeedUpRate = 2.4
 local mouseSpeed = initialMouseSpeed
 local scrollSpeed = 12
@@ -64,6 +74,16 @@ local function getMouseKeyName(keyCode)
     return "MIDDLE_CLICK"
   elseif keyCode == KeyCode.L then
     return "SPEEDUP"
+  elseif keyCode == KeyCode.W then
+    return "MOVE_TOPLEFT"
+  elseif keyCode == KeyCode.R then
+    return "MOVE_TOPRIGHT"
+  elseif keyCode == KeyCode.X then
+    return "MOVE_BOTTOMLEFT"
+  elseif keyCode == KeyCode.V then
+    return "MOVE_BOTTOMRIGHT"
+  elseif keyCode == KeyCode.C then
+    return "MOVE_CENTER"
   else
     return nil
   end
@@ -95,9 +115,29 @@ end
 
 -- マウスの位置などを更新するTimer（eventtap内でやると連続入力時に遅延が発生するため、Timerを動かす）
 local moveMouseTimer = hs.timer.new(0.01, function()
-  local d = mouseKeysPressed.SPEEDUP and scrollSpeed * scrollSpeedUpRate or scrollSpeed
+  if mouseKeysPressed.MOVE_TOPLEFT or mouseKeysPressed.MOVE_BOTTOMLEFT or mouseKeysPressed.MOVE_BOTTOMRIGHT or mouseKeysPressed.MOVE_TOPRIGHT or mouseKeysPressed.MOVE_CENTER then
+    local currentWindow = hs.window.focusedWindow()
+
+    if currentWindow then
+        local frame = currentWindow:frame()
+
+        if mouseKeysPressed.MOVE_TOPLEFT then
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.1, y = frame.y + frame.h * 0.1})
+        elseif mouseKeysPressed.MOVE_BOTTOMLEFT then
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.1, y = frame.y + frame.h * 0.9})
+        elseif mouseKeysPressed.MOVE_TOPRIGHT then
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.9, y = frame.y + frame.h * 0.1})
+        elseif mouseKeysPressed.MOVE_BOTTOMRIGHT then
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.9, y = frame.y + frame.h * 0.9})
+        elseif mouseKeysPressed.MOVE_CENTER then
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.5})
+        end
+    end
+  end
 
   if mouseKeysPressed.SCROLL then
+    local d = mouseKeysPressed.SPEEDUP and scrollSpeed * scrollSpeedUpRate or scrollSpeed
+
     if mouseKeysPressed.UP then
       hs.eventtap.event.newScrollEvent({0, -d}, {}, 'pixel'):post()
     end
@@ -147,6 +187,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
   end
 end)
 
+-- マウスが乗っているウィンドウにフォーカスを移すためのTimer
 local mouseFocusTimer = hs.timer.new(0.5, function()
     local mousePoint = hs.mouse.absolutePosition()
 
@@ -165,6 +206,16 @@ local mouseFocusTimer = hs.timer.new(0.5, function()
     end
 end)
 
+local function resetMouseMode()
+  mode = Mode.NORMAL
+  moveMouseTimer:stop()
+  mouseFocusTimer:stop()
+  mouseSpeed = initialMouseSpeed
+  for key in pairs(mouseKeysPressed) do
+    mouseKeysPressed[key] = false
+  end
+end
+
 local mouseKeyWaitTimer = nil
 mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp}, function(event)
   local keyCode = event:getKeyCode()
@@ -180,17 +231,16 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
 
   -- セミコロン入力時
   if keyCode == KeyCode.SEMICOLON and repeating == 0 then
+    resetMouseMode()
     if keyPressed and mouseKeyWaitTimer == nil and mode == Mode.NORMAL then
       -- マウスモードのキー入力を待つタイマーが起動していなかったら起動する
-      mouseKeyWaitTimer = hs.timer.doAfter(0.3, function()
+      mouseKeyWaitTimer = hs.timer.doAfter(0.5, function()
         log.d('# mouseKeyWaitTimer expired')
         mouseKeyWaitTimer = nil
       end)
     else
       -- セミコロンが離されたとき、全ての状態をリセットする
-      mode = Mode.NORMAL
-      moveMouseTimer:stop()
-      mouseFocusTimer:stop()
+      resetMouseMode()
       if mouseKeyWaitTimer then
         mouseKeyWaitTimer:stop()
         mouseKeyWaitTimer = nil
