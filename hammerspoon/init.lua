@@ -39,7 +39,7 @@ mouseKeysPressed = {
 local initialMouseSpeed = 2
 local maxMouseSpeed = 16
 local accelarationRate = 1.03
-local mouseSpeedUpRate = 2
+local mouseSpeedUpRate = 2.4
 local mouseSpeed = initialMouseSpeed
 local scrollSpeed = 12
 local scrollSpeedUpRate = 4
@@ -112,7 +112,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
     end
 
   else
-    local currentPos = hs.mouse.getRelativePosition()
+    local currentPos = hs.mouse.getAbsolutePosition()
     local isCursorPressed = false
     local d = mouseKeysPressed.SPEEDUP and mouseSpeed * mouseSpeedUpRate or mouseSpeed
 
@@ -139,7 +139,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
         mouseSpeed = initialMouseSpeed
     end
 
-    hs.mouse.setRelativePosition(currentPos)
+    hs.mouse.setAbsolutePosition(currentPos)
 
     -- 左クリック中はドラッグイベントを発生させる
     if mouseKeysPressed.LEFT_CLICK then
@@ -192,7 +192,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
 
   -- キー入力タイマーが有効なときにマウスキーが押されたらマウスモードに移行する
   elseif mouseKeyWaitTimer ~= nil then
-    if isAnyMouseKeyPressed(event) then
+    if isAnyMouseKeyPressed(event) and mode ~= Mode.MOUSE_MOVE then
       updateMouseKeysPressed(event)
       mode = Mode.MOUSE_MOVE
       log.d('# Mouse mode')
