@@ -1,5 +1,15 @@
 local log = hs.logger.new('myLogger', 'debug')
 
+hs.urlevent.bind("moveMouseToActiveWindow", function()
+  log.d('moveMouseToWindowCenter')
+  local win = hs.window.frontmostWindow()
+  if win then
+      local f = win:frame()
+      local center = hs.geometry.point(f.x + f.w * 0.9, f.y + f.h * 0.8)
+      hs.mouse.absolutePosition(center)
+  end
+end)
+
 local Mode = {
   NORMAL = 0,
   MOUSE_MOVE = 1
@@ -183,9 +193,12 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   -- キー入力タイマーが有効なときにマウスキーが押されたらマウスモードに移行する
   elseif mouseKeyWaitTimer ~= nil then
     if isAnyMouseKeyPressed(event) then
+      updateMouseKeysPressed(event)
       mode = Mode.MOUSE_MOVE
       log.d('# Mouse mode')
       moveMouseTimer:start()
+
+      hs.alert.show("Mouse mode", 1)
     end
 
     return true
