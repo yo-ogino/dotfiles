@@ -115,6 +115,12 @@ local function isAnyMouseKeyPressed(event)
   return false
 end
 
+local function resetMouseKeysPressed()
+  for key in pairs(mouseKeysPressed) do
+    mouseKeysPressed[key] = false
+  end
+end
+
 -- マウスの位置などを更新するTimer（eventtap内でやると連続入力時に遅延が発生するため、Timerを動かす）
 local moveMouseTimer = hs.timer.new(0.01, function()
   if mouseKeysPressed.MOVE_TOPLEFT or mouseKeysPressed.MOVE_BOTTOMLEFT or mouseKeysPressed.MOVE_BOTTOMRIGHT or mouseKeysPressed.MOVE_TOPRIGHT or mouseKeysPressed.MOVE_CENTER then
@@ -213,9 +219,7 @@ local function resetMouseMode()
   moveMouseTimer:stop()
   mouseFocusTimer:stop()
   mouseSpeed = MouseProp.INITIAL_SPEED
-  for key in pairs(mouseKeysPressed) do
-    mouseKeysPressed[key] = false
-  end
+  resetMouseKeysPressed()
 end
 
 local mouseKeyWaitTimer = nil
@@ -224,7 +228,6 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   local keyPressed = event:getType() == hs.eventtap.event.types.keyDown
   local eventProps = hs.eventtap.event.properties
   local repeating = event:getProperty(eventProps.keyboardEventAutorepeat)
-
 
   -- 無限ループを防ぐため、自前でセミコロンを発火させた場合はeventSourceUserDataに1をセットしている
   if event:getProperty(eventProps.eventSourceUserData) == 1 then
@@ -259,9 +262,12 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
     end
 
     return true
+  end
 
   -- キー入力タイマーが有効なときにマウスキーが押されたらマウスモードに移行する
-  elseif mouseKeyWaitTimer ~= nil then
+  if mouseKeyWaitTimer ~= nil then
+    updateMouseKeysPressed(event)
+
     if isAnyMouseKeyPressed(event) and mode ~= Mode.MOUSE_MOVE then
       mode = Mode.MOUSE_MOVE
       log.d('# Mouse mode')
@@ -272,9 +278,10 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
     end
 
     return true
+  end
 
   -- マウスモードのとき
-  elseif mode == Mode.MOUSE_MOVE then
+  if mode == Mode.MOUSE_MOVE then
     updateMouseKeysPressed(event)
 
     if repeating == 0 then
