@@ -235,9 +235,11 @@ local function resetMouseMode()
   mouseFocusTimer:stop()
   mouseSpeed = MouseProp.INITIAL_SPEED
   resetMouseKeysPressed()
+  isShiftPressed = false
 end
 
 local mouseKeyWaitTimer = nil
+local isShiftPressed = false -- 普通にカンマを入力したいときのためにshiftを直前に押したか状態管理
 mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp}, function(event)
   local keyCode = event:getKeyCode()
   local keyPressed = event:getType() == hs.eventtap.event.types.keyDown
@@ -258,6 +260,9 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
         log.d('# mouseKeyWaitTimer expired')
         mouseKeyWaitTimer = nil
       end)
+      if event:getFlags().shift then
+        isShiftPressed = true
+      end
     else
       -- セミコロンが離されたとき、全ての状態をリセットする
       resetMouseMode()
@@ -266,13 +271,14 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
         mouseKeyWaitTimer = nil
 
         -- 即座にキーを離した場合に通常のセミコロンのキーイベントを発生させる
-        local mods = event:getFlags().shift and {"shift"} or {}
+        local mods = (isShiftPressed or event:getFlags().shift) and {"shift"} or {}
         local eventDown = hs.eventtap.event.newKeyEvent(mods, KeyCode.SEMICOLON, true)
         eventDown:setProperty(eventProps.eventSourceUserData, 1)
         eventDown:post()
         local eventUp = hs.eventtap.event.newKeyEvent(mods, KeyCode.SEMICOLON, false)
         eventUp:setProperty(eventProps.eventSourceUserData, 1)
         eventUp:post()
+        isShiftPressed = false
       end
     end
 
