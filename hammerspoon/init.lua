@@ -26,7 +26,9 @@ local KeyCode = {
   X = hs.keycodes.map["x"],
   R = hs.keycodes.map["r"],
   V = hs.keycodes.map["v"],
-  C = hs.keycodes.map["c"]
+  C = hs.keycodes.map["c"],
+  A = hs.keycodes.map["a"],
+  G = hs.keycodes.map["g"]
 }
 
 mouseKeysPressed = {
@@ -43,13 +45,15 @@ mouseKeysPressed = {
   MOVE_TOPRIGHT = false,
   MOVE_BOTTOMLEFT = false,
   MOVE_BOTTOMRIGHT = false,
-  MOVE_CENTER = false
+  MOVE_CENTER = false,
+  MOVE_LEFT = false,
+  MOVE_RIGHT = false
 }
 
 local MouseProp = {
   INITIAL_SPEED = 2,
-  MAX_SPEED = 14,
-  ACCELARATION_RATE = 1.04,
+  MAX_SPEED = 18,
+  ACCELARATION_RATE = 1.03,
   SPEED_UP_RATE = 2.4,
   SCROLL_SPEED = 12,
   SCROLL_SPEED_UP_RATE = 4
@@ -86,6 +90,10 @@ local function getMouseKeyName(keyCode)
     return "MOVE_BOTTOMRIGHT"
   elseif keyCode == KeyCode.C then
     return "MOVE_CENTER"
+  elseif keyCode == KeyCode.A then
+    return "MOVE_LEFT"
+  elseif keyCode == KeyCode.G then
+    return "MOVE_RIGHT"
   else
     return nil
   end
@@ -123,7 +131,10 @@ end
 
 -- マウスの位置などを更新するTimer（eventtap内でやると連続入力時に遅延が発生するため、Timerを動かす）
 local moveMouseTimer = hs.timer.new(0.01, function()
-  if mouseKeysPressed.MOVE_TOPLEFT or mouseKeysPressed.MOVE_BOTTOMLEFT or mouseKeysPressed.MOVE_BOTTOMRIGHT or mouseKeysPressed.MOVE_TOPRIGHT or mouseKeysPressed.MOVE_CENTER then
+  if mouseKeysPressed.MOVE_TOPLEFT or mouseKeysPressed.MOVE_BOTTOMLEFT
+  or mouseKeysPressed.MOVE_BOTTOMRIGHT or mouseKeysPressed.MOVE_TOPRIGHT
+  or mouseKeysPressed.MOVE_LEFT or mouseKeysPressed.MOVE_RIGHT
+  or mouseKeysPressed.MOVE_CENTER then
     local currentWindow = hs.window.focusedWindow()
 
     if currentWindow then
@@ -137,6 +148,10 @@ local moveMouseTimer = hs.timer.new(0.01, function()
           hs.mouse.absolutePosition({x = frame.x + frame.w * 0.9, y = frame.y + frame.h * 0.1})
         elseif mouseKeysPressed.MOVE_BOTTOMRIGHT then
           hs.mouse.absolutePosition({x = frame.x + frame.w * 0.9, y = frame.y + frame.h * 0.9})
+        elseif mouseKeysPressed.MOVE_LEFT then
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.2, y = frame.y + frame.h * 0.5})
+        elseif mouseKeysPressed.MOVE_RIGHT then
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.8, y = frame.y + frame.h * 0.5})
         elseif mouseKeysPressed.MOVE_CENTER then
           hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.5})
         end
@@ -161,7 +176,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
   else
     local currentPos = hs.mouse.absolutePosition()
     local isCursorPressed = false
-    local d = mouseKeysPressed.SPEEDUP and mouseSpeed * MouseProp.SPEED_UP_RATE or mouseSpeed
+    local d = mouseKeysPressed.SPEEDUP and MouseProp.MAX_SPEED * MouseProp.SPEED_UP_RATE or mouseSpeed
 
     if mouseKeysPressed.UP then
       currentPos.y = currentPos.y - d
