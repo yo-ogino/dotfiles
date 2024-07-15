@@ -246,6 +246,38 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   local eventProps = hs.eventtap.event.properties
   local repeating = event:getProperty(eventProps.keyboardEventAutorepeat)
 
+  local function processMouseKeys()
+    updateMouseKeysPressed(event)
+
+    if repeating == 0 then
+      local key = getMouseKeyName(keyCode)
+      -- 左クリック
+      if key == "LEFT_CLICK" then
+        if keyPressed then
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, hs.mouse.absolutePosition()):post()
+        else
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, hs.mouse.absolutePosition()):post()
+        end
+
+      -- 右クリック
+      elseif key == "RIGHT_CLICK" then
+        if keyPressed then
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.rightMouseDown, hs.mouse.absolutePosition()):post()
+        else
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.rightMouseUp, hs.mouse.absolutePosition()):post()
+        end
+
+      -- ホイールクリック
+      elseif key == "MIDDLE_CLICK" then
+        if keyPressed then
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseDown, hs.mouse.absolutePosition(), 2):post()
+        else
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseUp, hs.mouse.absolutePosition(), 2):post()
+        end
+      end
+    end
+  end
+
   -- 無限ループを防ぐため、自前でセミコロンを発火させた場合はeventSourceUserDataに1をセットしている
   if event:getProperty(eventProps.eventSourceUserData) == 1 then
     return false
@@ -287,7 +319,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
 
   -- キー入力タイマーが有効なときにマウスキーが押されたらマウスモードに移行する
   if mouseKeyWaitTimer ~= nil then
-    updateMouseKeysPressed(event)
+    processMouseKeys()
 
     if isAnyMouseKeyPressed(event) and mode ~= Mode.MOUSE_MOVE then
       mode = Mode.MOUSE_MOVE
@@ -303,37 +335,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
 
   -- マウスモードのとき
   if mode == Mode.MOUSE_MOVE then
-    updateMouseKeysPressed(event)
-
-    if repeating == 0 then
-      local key = getMouseKeyName(keyCode)
-      -- 左クリック
-      if key == "LEFT_CLICK" then
-        if keyPressed then
-          log.d('Left click')
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, hs.mouse.absolutePosition()):post()
-        else
-          log.d('Left click up')
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, hs.mouse.absolutePosition()):post()
-        end
-
-      -- 右クリック
-      elseif key == "RIGHT_CLICK" then
-        if keyPressed then
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.rightMouseDown, hs.mouse.absolutePosition()):post()
-        else
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.rightMouseUp, hs.mouse.absolutePosition()):post()
-        end
-
-      -- ホイールクリック
-      elseif key == "MIDDLE_CLICK" then
-        if keyPressed then
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseDown, hs.mouse.absolutePosition(), 2):post()
-        else
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseUp, hs.mouse.absolutePosition(), 2):post()
-        end
-      end
-    end
+    processMouseKeys()
 
     return true
   end
