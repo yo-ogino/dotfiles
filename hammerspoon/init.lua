@@ -1,5 +1,6 @@
 local log = hs.logger.new('myLogger', 'debug')
 
+-- マウスカーソルをアクティブウインドウ上に移動する。skhdから呼んでいる
 hs.urlevent.bind("moveMouseToActiveWindow", function()
   log.d('moveMouseToWindowCenter')
   local win = hs.window.frontmostWindow()
@@ -10,6 +11,23 @@ hs.urlevent.bind("moveMouseToActiveWindow", function()
   end
 end)
 
+-- Ctrl+Cmd+zでウインドウを記憶し、Ctrl+Cmd+dでフォーカスする
+stashedWindows = nil
+hs.hotkey.bind({"ctrl", "cmd"}, "z", function()
+  stashedWindow = hs.window.focusedWindow()
+
+  hs.alert.show("Stash window: " .. stashedWindow:title())
+end)
+-- Macデフォルトの辞書検索が殺せないため、KarabinerでOpt付きに変換している
+hs.hotkey.bind({"ctrl", "cmd", "option"}, "d", function()
+  if stashedWindow then
+    stashedWindow:focus()
+  else
+    hs.alert.show("No stashed window")
+  end
+end)
+
+-- 以下、マウスモード用
 local Mode = {
   NORMAL = 0,
   MOUSE_MOVE = 1
