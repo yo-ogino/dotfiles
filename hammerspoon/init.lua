@@ -11,21 +11,28 @@ hs.urlevent.bind("moveMouseToActiveWindow", function()
   end
 end)
 
--- Ctrl+Cmd+zでウインドウを記憶し、Ctrl+Cmd+dでフォーカスする
-stashedWindows = nil
-hs.hotkey.bind({"ctrl", "cmd"}, "z", function()
-  stashedWindow = hs.window.focusedWindow()
+-- ウインドウの記憶&focus
+savedWindows = {}
+for _, key in ipairs({"D", "1", "2", "3"}) do
+  local saveModifier = {"ctrl", "cmd", "shift"}
+  -- Ctrl+Cmd+DはMacの調べる機能に割り当てられているため、KarabinerでOpt付きに変換している
+  local focusModifier = key == "D" and {"ctrl", "cmd", "option"} or {"ctrl", "cmd"}
 
-  hs.alert.show("Stash window: " .. stashedWindow:title())
-end)
--- Macデフォルトの辞書検索が殺せないため、KarabinerでOpt付きに変換している
-hs.hotkey.bind({"ctrl", "cmd", "option"}, "d", function()
-  if stashedWindow then
-    stashedWindow:focus()
-  else
-    hs.alert.show("No stashed window")
-  end
-end)
+  hs.hotkey.bind(saveModifier, key, function()
+    savedWindows[key] = hs.window.focusedWindow()
+    hs.alert.show("Save window: " .. savedWindows[key]:title())
+    log.d(hs.inspect(savedWindows))
+  end)
+
+  hs.hotkey.bind(focusModifier, key, function()
+    window = savedWindows[key]
+    if window then
+      window:focus()
+    else
+      hs.alert.show("No saved window")
+    end
+  end)
+end
 
 -- 以下、マウスモード用
 local Mode = {
