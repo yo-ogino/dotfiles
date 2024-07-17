@@ -56,25 +56,6 @@ local KeyCode = {
   G = hs.keycodes.map["g"]
 }
 
-mouseKeysPressed = {
-  UP = false,
-  DOWN = false,
-  LEFT = false,
-  RIGHT = false,
-  SCROLL = false,
-  LEFT_CLICK = false,
-  RIGHT_CLICK = false,
-  MIDDLE_CLICK = false,
-  SPEEDUP = false,
-  MOVE_TOPLEFT = false,
-  MOVE_TOPRIGHT = false,
-  MOVE_BOTTOMLEFT = false,
-  MOVE_BOTTOMRIGHT = false,
-  MOVE_CENTER = false,
-  MOVE_LEFT = false,
-  MOVE_RIGHT = false
-}
-
 local MouseProp = {
   INITIAL_SPEED = 1.6,
   MAX_SPEED = 8,
@@ -123,6 +104,7 @@ local function getMouseKeyName(keyCode)
     return nil
   end
 end
+mouseKeysPressed = {}
 
 -- MouseKeyが押されたときに状態を更新する
 local function updateMouseKeysPressed(event)
