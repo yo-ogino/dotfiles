@@ -51,10 +51,10 @@ mouseKeysPressed = {
 }
 
 local MouseProp = {
-  INITIAL_SPEED = 2,
-  MAX_SPEED = 18,
-  ACCELARATION_RATE = 1.03,
-  SPEED_UP_RATE = 2.4,
+  INITIAL_SPEED = 1.6,
+  MAX_SPEED = 8,
+  ACCELARATION_RATE = 1.02,
+  SPEED_UP_RATE = 2,
   SCROLL_SPEED = 12,
   SCROLL_SPEED_UP_RATE = 4
 }
