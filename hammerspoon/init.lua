@@ -70,17 +70,26 @@ mode = Mode.NORMAL
 
 local KeyCode = {
   SEMICOLON = hs.keycodes.map[";"],
+  H = hs.keycodes.map["h"],
   J = hs.keycodes.map["j"],
   K = hs.keycodes.map["k"],
   L = hs.keycodes.map["l"],
   I = hs.keycodes.map["i"],
+  Q = hs.keycodes.map["q"],
   W = hs.keycodes.map["w"],
-  X = hs.keycodes.map["x"],
+  E = hs.keycodes.map["e"],
   R = hs.keycodes.map["r"],
-  V = hs.keycodes.map["v"],
-  C = hs.keycodes.map["c"],
+  T = hs.keycodes.map["t"],
   A = hs.keycodes.map["a"],
-  G = hs.keycodes.map["g"]
+  S = hs.keycodes.map["s"],
+  D = hs.keycodes.map["d"],
+  F = hs.keycodes.map["f"],
+  G = hs.keycodes.map["g"],
+  Z = hs.keycodes.map["z"],
+  X = hs.keycodes.map["x"],
+  C = hs.keycodes.map["c"],
+  V = hs.keycodes.map["v"],
+  B = hs.keycodes.map["b"]
 }
 
 local MouseProp = {
@@ -95,15 +104,15 @@ local mouseSpeed = MouseProp.INITIAL_SPEED
 
 -- keyCodeからマウスのキー名を取得する
 local function getMouseKeyName(keyCode)
-  if keyCode == hs.keycodes.map["e"] then
+  if keyCode == KeyCode.E then
     return "UP"
-  elseif keyCode == hs.keycodes.map["d"] then
+  elseif keyCode == KeyCode.D then
     return "DOWN"
-  elseif keyCode == hs.keycodes.map["s"] then
+  elseif keyCode == KeyCode.S then
     return "LEFT"
-  elseif keyCode == hs.keycodes.map["f"] then
+  elseif keyCode == KeyCode.F then
     return "RIGHT"
-  elseif keyCode == hs.keycodes.map["h"] then
+  elseif keyCode == KeyCode.H then
     return "SCROLL"
   elseif keyCode == KeyCode.J then
     return "LEFT_CLICK"
@@ -112,21 +121,21 @@ local function getMouseKeyName(keyCode)
   elseif keyCode == KeyCode.I then
     return "MIDDLE_CLICK"
   elseif keyCode == KeyCode.L then
-    return "SPEEDUP"
+    return "BOOST"
   elseif keyCode == KeyCode.W then
-    return "MOVE_TOPLEFT"
+    return "W"
   elseif keyCode == KeyCode.R then
-    return "MOVE_TOPRIGHT"
+    return "R"
   elseif keyCode == KeyCode.X then
-    return "MOVE_BOTTOMLEFT"
+    return "X"
   elseif keyCode == KeyCode.V then
-    return "MOVE_BOTTOMRIGHT"
+    return "V"
   elseif keyCode == KeyCode.C then
-    return "MOVE_CENTER"
+    return "C"
   elseif keyCode == KeyCode.A then
-    return "MOVE_LEFT"
+    return "A"
   elseif keyCode == KeyCode.G then
-    return "MOVE_RIGHT"
+    return "G"
   else
     return nil
   end
@@ -193,7 +202,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
   end
 
   if mouseKeysPressed.SCROLL then
-    local d = mouseKeysPressed.SPEEDUP and MouseProp.SCROLL_SPEED * MouseProp.SCROLL_SPEED_UP_RATE or MouseProp.SCROLL_SPEED
+    local d = mouseKeysPressed.BOOST and MouseProp.SCROLL_SPEED * MouseProp.SCROLL_SPEED_UP_RATE or MouseProp.SCROLL_SPEED
 
     if mouseKeysPressed.UP then
       hs.eventtap.event.newScrollEvent({0, -d}, {}, 'pixel'):post()
@@ -210,7 +219,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
   else
     local currentPos = hs.mouse.absolutePosition()
     local isCursorPressed = false
-    local d = mouseKeysPressed.SPEEDUP and MouseProp.MAX_SPEED * MouseProp.SPEED_UP_RATE or mouseSpeed
+    local d = mouseKeysPressed.BOOST and MouseProp.MAX_SPEED * MouseProp.SPEED_UP_RATE or mouseSpeed
 
     if mouseKeysPressed.UP then
       currentPos.y = currentPos.y - d
