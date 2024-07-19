@@ -34,6 +34,33 @@ for _, key in ipairs({"D", "1", "2", "3"}) do
   end)
 end
 
+-- Xcode overrides（一部modifierが意図通り設定できないため）
+xcodeHotkeys = {}
+local function activateXcodeHotkey()
+  if next(xcodeHotkeys) == nil then
+    table.insert(xcodeHotkeys, hs.hotkey.bind({"ctrl", "cmd", "option", "shift"}, "H", function()
+      hs.eventtap.keyStroke({"ctrl"}, "[")
+    end))
+  end
+end
+local function deactivateXcodeHotkey()
+  for _, hotkey in ipairs(xcodeHotkeys) do
+    hotkey:delete()
+  end
+  xcodeHotkeys = {}
+end
+local function watchXcode(name, eventType, app)
+  if name == "Xcode" then
+    if eventType == hs.application.watcher.activated then
+      activateXcodeHotkey()
+    else
+      deactivateXcodeHotkey()
+    end
+  end
+end
+appWatcher = hs.application.watcher.new(watchXcode)
+appWatcher:start()
+
 -- 以下、マウスモード用
 local Mode = {
   NORMAL = 0,
