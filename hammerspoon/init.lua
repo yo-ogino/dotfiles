@@ -2,12 +2,10 @@ local log = hs.logger.new('myLogger', 'debug')
 
 -- マウスカーソルをアクティブウインドウ上に移動する。skhdから呼んでいる
 hs.urlevent.bind("moveMouseToActiveWindow", function()
-  log.d('moveMouseToWindowCenter')
   local win = hs.window.frontmostWindow()
   if win then
       local f = win:frame()
-      local center = hs.geometry.point(f.x + f.w * 0.9, f.y + f.h * 0.8)
-      hs.mouse.absolutePosition(center)
+      hs.mouse.absolutePosition(hs.geometry.point(f.x + f.w * 0.9, f.y + f.h * 0.8))
   end
 end)
 
@@ -21,7 +19,6 @@ for _, key in ipairs({"D", "1", "2", "3"}) do
   hs.hotkey.bind(saveModifier, key, function()
     savedWindows[key] = hs.window.focusedWindow()
     hs.alert.show("Save window: " .. savedWindows[key]:title())
-    log.d(hs.inspect(savedWindows))
   end)
 
   hs.hotkey.bind(focusModifier, key, function()
@@ -75,6 +72,7 @@ local KeyCode = {
   K = hs.keycodes.map["k"],
   L = hs.keycodes.map["l"],
   I = hs.keycodes.map["i"],
+  N = hs.keycodes.map["n"],
   M = hs.keycodes.map["m"],
   Q = hs.keycodes.map["q"],
   W = hs.keycodes.map["w"],
@@ -90,7 +88,11 @@ local KeyCode = {
   X = hs.keycodes.map["x"],
   C = hs.keycodes.map["c"],
   V = hs.keycodes.map["v"],
-  B = hs.keycodes.map["b"]
+  B = hs.keycodes.map["b"],
+  COMMA = hs.keycodes.map[","],
+  ESC = hs.keycodes.map["escape"],
+  PERIOD = hs.keycodes.map["."],
+  SLASH = hs.keycodes.map["/"],
 }
 
 local MouseProp = {
@@ -114,16 +116,22 @@ local function getMouseKeyName(keyCode)
   elseif keyCode == KeyCode.F then
     return "RIGHT"
   elseif keyCode == KeyCode.H then
-    return "SCROLL"
+    return "SCROLL_LEFT"
   elseif keyCode == KeyCode.J then
-    return "LEFT_CLICK"
+    return "SCROLL_DOWN"
   elseif keyCode == KeyCode.K then
-    return "RIGHT_CLICK"
-  elseif keyCode == KeyCode.I then
-    return "MIDDLE_CLICK"
+    return "SCROLL_UP"
   elseif keyCode == KeyCode.L then
-    return "BOOST"
+    return "SCROLL_RIGHT"
+  elseif keyCode == KeyCode.I then
+    return "WARP"
+  elseif keyCode == KeyCode.N then
+    return "MIDDLE_CLICK"
   elseif keyCode == KeyCode.M then
+    return "LEFT_CLICK"
+  elseif keyCode == KeyCode.COMMA then
+    return "RIGHT_CLICK"
+  elseif keyCode == KeyCode.PERIOD then
     return "WARP"
   elseif keyCode == KeyCode.Q then
     return "Q"
@@ -147,6 +155,8 @@ local function getMouseKeyName(keyCode)
     return "V"
   elseif keyCode == KeyCode.B then
     return "B"
+  elseif keyCode == KeyCode.SLASH then
+    return "BOOST"
   else
     return nil
   end
@@ -185,23 +195,7 @@ end
 
 -- マウスの位置などを更新するTimer（eventtap内でやると連続入力時に遅延が発生するため、Timerを動かす）
 local moveMouseTimer = hs.timer.new(0.01, function()
-
-  if mouseKeysPressed.SCROLL then
-    local d = mouseKeysPressed.BOOST and MouseProp.SCROLL_SPEED * MouseProp.SCROLL_BOOST_RATE or MouseProp.SCROLL_SPEED
-
-    if mouseKeysPressed.UP then
-      hs.eventtap.event.newScrollEvent({0, -d}, {}, 'pixel'):post()
-    end
-    if mouseKeysPressed.DOWN then
-      hs.eventtap.event.newScrollEvent({0, d}, {}, 'pixel'):post()
-    end
-    if mouseKeysPressed.LEFT then
-      hs.eventtap.event.newScrollEvent({-d, 0}, {}, 'pixel'):post()
-    end
-    if mouseKeysPressed.RIGHT then
-      hs.eventtap.event.newScrollEvent({d, 0}, {}, 'pixel'):post()
-    end
-  elseif mouseKeysPressed.WARP then
+  if mouseKeysPressed.WARP then
       local currentWindow = hs.window.focusedWindow()
       if currentWindow then
         local frame = currentWindow:frame()
@@ -239,10 +233,25 @@ local moveMouseTimer = hs.timer.new(0.01, function()
         end
     end
   else
+    -- スクロール
+    local d = mouseKeysPressed.BOOST and MouseProp.SCROLL_SPEED * MouseProp.SCROLL_BOOST_RATE or MouseProp.SCROLL_SPEED
+    if mouseKeysPressed.SCROLL_UP then
+      hs.eventtap.event.newScrollEvent({0, -d}, {}, 'pixel'):post()
+    end
+    if mouseKeysPressed.SCROLL_DOWN then
+      hs.eventtap.event.newScrollEvent({0, d}, {}, 'pixel'):post()
+    end
+    if mouseKeysPressed.SCROLL_LEFT then
+      hs.eventtap.event.newScrollEvent({-d, 0}, {}, 'pixel'):post()
+    end
+    if mouseKeysPressed.SCROLL_RIGHT then
+      hs.eventtap.event.newScrollEvent({d, 0}, {}, 'pixel'):post()
+    end
+
+    -- カーソル
     local currentPos = hs.mouse.absolutePosition()
     local isCursorPressed = false
     local d = mouseKeysPressed.BOOST and MouseProp.MAX_SPEED * MouseProp.BOOST_RATE or mouseSpeed
-
     if mouseKeysPressed.UP then
       currentPos.y = currentPos.y - d
       isCursorPressed = true
@@ -259,13 +268,11 @@ local moveMouseTimer = hs.timer.new(0.01, function()
       currentPos.x = currentPos.x + d
       isCursorPressed = true
     end
-
     if mouseSpeed <= MouseProp.MAX_SPEED and isCursorPressed then
       mouseSpeed = mouseSpeed * MouseProp.ACCELARATION_RATE
     elseif mouseSpeed > MouseProp.INITIAL_SPEED and isCursorPressed == false then
         mouseSpeed = MouseProp.INITIAL_SPEED
     end
-
     hs.mouse.absolutePosition(currentPos)
 
     -- 左クリック中はドラッグイベントを発生させる
@@ -294,6 +301,24 @@ local mouseFocusTimer = hs.timer.new(0.5, function()
     end
 end)
 
+local function enableMouseMode()
+  mode = Mode.MOUSE_MOVE
+  moveMouseTimer:start()
+  mouseFocusTimer:start()
+
+  hs.alert.show("Mouse mode started", { fillColor={red=0.1,green=0.8,blue=0.2,alpha=0.4} }, 1)
+
+  hs.alert.show("Mouse mode", {
+    strokeWidth  = 0,  -- ボーダーの幅
+    fillColor    = { white = 0, alpha = 0.7 },  -- 塗りつぶしの色
+    textColor    = { white = 1, alpha = 0.9 },  -- テキストの色
+    textSize     = 14,  -- フォントサイズ
+    radius       = 10,  -- 角丸
+    atScreenEdge = 1,  --  0: screen center (default); 1: top edge; 2: bottom edge
+  }
+  , 600)
+end
+
 local function resetMouseMode()
   mode = Mode.NORMAL
   moveMouseTimer:stop()
@@ -301,6 +326,9 @@ local function resetMouseMode()
   mouseSpeed = MouseProp.INITIAL_SPEED
   resetMouseKeysPressed()
   isShiftPressed = false
+
+  hs.alert.closeAll()
+  hs.alert.show("Mouse mode finished", { fillColor={red=0.8,green=0.2,blue=0.1,alpha=0.4} }, 1)
 end
 
 local mouseKeyWaitTimer = nil
@@ -348,59 +376,63 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
     return false
   end
 
-  -- セミコロン入力時
-  if keyCode == KeyCode.SEMICOLON and repeating == 0 then
-    resetMouseMode()
-    if keyPressed and mouseKeyWaitTimer == nil and mode == Mode.NORMAL then
-      -- マウスモードのキー入力を待つタイマーが起動していなかったら起動する
-      mouseKeyWaitTimer = hs.timer.doAfter(0.5, function()
-        log.d('# mouseKeyWaitTimer expired')
-        mouseKeyWaitTimer = nil
-      end)
-      if event:getFlags().shift then
-        isShiftPressed = true
-      end
-    else
-      -- セミコロンが離されたとき、全ての状態をリセットする
-      resetMouseMode()
-      if mouseKeyWaitTimer then
-        mouseKeyWaitTimer:stop()
-        mouseKeyWaitTimer = nil
+  if mode == Mode.NORMAL then
+    if keyCode == KeyCode.SEMICOLON and repeating == 0 then
+      if keyPressed then
+        if mouseKeyWaitTimer == nil and mode == Mode.NORMAL then
+          -- マウスモードのキー入力を待つタイマーが起動していなかったら起動する
+          mouseKeyWaitTimer = hs.timer.doAfter(0.5, function()
+            mouseKeyWaitTimer = nil
+          end)
+          if event:getFlags().shift then
+            isShiftPressed = true
+          end
+        end
+      else
+        if mouseKeyWaitTimer then
+          mouseKeyWaitTimer:stop()
+          mouseKeyWaitTimer = nil
 
-        -- 即座にキーを離した場合に通常のセミコロンのキーイベントを発生させる
-        local mods = (isShiftPressed or event:getFlags().shift) and {"shift"} or {}
-        local eventDown = hs.eventtap.event.newKeyEvent(mods, KeyCode.SEMICOLON, true)
-        eventDown:setProperty(eventProps.eventSourceUserData, 1)
-        eventDown:post()
-        local eventUp = hs.eventtap.event.newKeyEvent(mods, KeyCode.SEMICOLON, false)
-        eventUp:setProperty(eventProps.eventSourceUserData, 1)
-        eventUp:post()
-        isShiftPressed = false
+          -- 即座にキーを離した場合に通常のセミコロンのキーイベントを発生させる
+          local mods = (isShiftPressed or event:getFlags().shift) and {"shift"} or {}
+          local eventDown = hs.eventtap.event.newKeyEvent(mods, KeyCode.SEMICOLON, true)
+          eventDown:setProperty(eventProps.eventSourceUserData, 1)
+          eventDown:post()
+          local eventUp = hs.eventtap.event.newKeyEvent(mods, KeyCode.SEMICOLON, false)
+          eventUp:setProperty(eventProps.eventSourceUserData, 1)
+          eventUp:post()
+          isShiftPressed = false
+        end
       end
+
+      return true
     end
 
-    return true
-  end
+    -- キー入力タイマーが有効なときにマウスキーが押されたらマウスモードに移行する
+    if mouseKeyWaitTimer ~= nil then
+      processMouseKeys()
 
-  -- キー入力タイマーが有効なときにマウスキーが押されたらマウスモードに移行する
-  if mouseKeyWaitTimer ~= nil then
-    processMouseKeys()
+      if isAnyMouseKeyPressed(event) and mode ~= Mode.MOUSE_MOVE then
+        enableMouseMode()
+      end
 
-    if isAnyMouseKeyPressed(event) and mode ~= Mode.MOUSE_MOVE then
-      mode = Mode.MOUSE_MOVE
-      log.d('# Mouse mode')
-      moveMouseTimer:start()
-      mouseFocusTimer:start()
-
-      hs.alert.show("Mouse mode", 1)
+      return true
     end
-
-    return true
   end
 
   -- マウスモードのとき
   if mode == Mode.MOUSE_MOVE then
     processMouseKeys()
+
+    local modifiers = event:getFlags()
+    if modifiers["ctrl"] and modifiers["cmd"] then
+      resetMouseMode()
+      return false
+    end
+
+    if keyPressed and (keyCode == KeyCode.ESC or keyCode == KeyCode.SEMICOLON) then
+      resetMouseMode()
+    end
 
     return true
   end
