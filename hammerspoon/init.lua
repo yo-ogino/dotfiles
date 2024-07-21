@@ -65,6 +65,16 @@ local Mode = {
 }
 mode = Mode.NORMAL
 
+local MouseProp = {
+  INITIAL_SPEED = 1.2,
+  MAX_SPEED = 4,
+  ACCELARATION_RATE = 1.02,
+  BOOST_RATE = 1.5,
+  SCROLL_SPEED = 12,
+  SCROLL_BOOST_RATE = 4
+}
+mouseSpeed = MouseProp.INITIAL_SPEED
+
 local KeyCode = {
   SEMICOLON = hs.keycodes.map[";"],
   H = hs.keycodes.map["h"],
@@ -94,16 +104,6 @@ local KeyCode = {
   PERIOD = hs.keycodes.map["."],
   SLASH = hs.keycodes.map["/"],
 }
-
-local MouseProp = {
-  INITIAL_SPEED = 1.2,
-  MAX_SPEED = 4,
-  ACCELARATION_RATE = 1.02,
-  BOOST_RATE = 1.5,
-  SCROLL_SPEED = 12,
-  SCROLL_BOOST_RATE = 4
-}
-local mouseSpeed = MouseProp.INITIAL_SPEED
 
 -- keyCodeからマウスのキー名を取得する
 local function getMouseKeyName(keyCode)
