@@ -337,6 +337,7 @@ end
 local mouseKeyWaitTimer = nil
 local isShiftPressed = false -- 普通にカンマを入力したいときのためにshiftを直前に押したか状態管理
 local clickState = 1
+local keyRepeatCount = 0
 mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp}, function(event)
   local keyCode = event:getKeyCode()
   local keyPressed = event:getType() == hs.eventtap.event.types.keyDown
@@ -358,6 +359,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   local function processMouseKeys()
     updateMouseKeysPressed(event)
 
+    -- 移動やスクロールではなく単押し系はここで処理
     if repeating == 0 then
       local key = getMouseKeyName(keyCode)
       -- 左クリック
@@ -387,6 +389,24 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
           hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseDown, hs.mouse.absolutePosition(), 2):post()
         else
           hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseUp, hs.mouse.absolutePosition(), 2):post()
+        end
+
+      -- gg, Gなどの一発スクロール系
+      elseif not mouseKeysPressed.WARP then
+        if keyPressed and key == "G" then
+          if modifiers.shift then -- G（最下部へ）
+            hs.eventtap.event.newScrollEvent({0, 100000}, {}, 'pixel'):post()
+          else -- gg（最上部へ）
+            if keyRepeatCount == 0 then
+              keyRepeatCount = keyRepeatCount + 1
+              hs.timer.doAfter(0.2, function()
+                keyRepeatCount = 0
+              end)
+            else
+              hs.eventtap.event.newScrollEvent({0, -100000}, {}, 'pixel'):post()
+              keyRepeatCount = 0
+            end
+          end
         end
       end
     end
