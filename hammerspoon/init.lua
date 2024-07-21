@@ -81,6 +81,7 @@ local KeyCode = {
   J = hs.keycodes.map["j"],
   K = hs.keycodes.map["k"],
   L = hs.keycodes.map["l"],
+  U = hs.keycodes.map["u"],
   I = hs.keycodes.map["i"],
   N = hs.keycodes.map["n"],
   M = hs.keycodes.map["m"],
@@ -116,15 +117,17 @@ local function getMouseKeyName(keyCode)
   elseif keyCode == KeyCode.F then
     return "RIGHT"
   elseif keyCode == KeyCode.H then
-    return "SCROLL_LEFT"
+    return "WARP"
   elseif keyCode == KeyCode.J then
     return "SCROLL_DOWN"
   elseif keyCode == KeyCode.K then
     return "SCROLL_UP"
   elseif keyCode == KeyCode.L then
-    return "SCROLL_RIGHT"
+    return "BOOST"
+  elseif keyCode == KeyCode.U then
+    return "SCROLL_LEFT"
   elseif keyCode == KeyCode.I then
-    return "WARP"
+    return "SCROLL_RIGHT"
   elseif keyCode == KeyCode.N then
     return "MIDDLE_CLICK"
   elseif keyCode == KeyCode.M then
