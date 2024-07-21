@@ -339,6 +339,18 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   local keyPressed = event:getType() == hs.eventtap.event.types.keyDown
   local eventProps = hs.eventtap.event.properties
   local repeating = event:getProperty(eventProps.keyboardEventAutorepeat)
+  local modifiers = event:getFlags()
+
+  -- {shift = true} という構造のmodifiersをevent作成時に渡せる {"shift"}　という形に変換する
+  local function modsForEventOpt()
+    local mods = {}
+    for k, v in pairs(modifiers) do
+      if v then
+        table.insert(mods, k)
+      end
+    end
+    return mods
+  end
 
   local function processMouseKeys()
     updateMouseKeysPressed(event)
@@ -348,9 +360,9 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
       -- 左クリック
       if key == "LEFT_CLICK" then
         if keyPressed then
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, hs.mouse.absolutePosition()):setProperty(eventProps.mouseEventClickState, clickState):post()
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, hs.mouse.absolutePosition(), modsForEventOpt()):setProperty(eventProps.mouseEventClickState, clickState):post()
         else
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, hs.mouse.absolutePosition()):setProperty(eventProps.mouseEventClickState, clickState):post()
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, hs.mouse.absolutePosition(), modsForEventOpt()):setProperty(eventProps.mouseEventClickState, clickState):post()
           -- ダブルクリック扱いするためにclickStateをカウントアップする必要があるらしい
           clickState = clickState + 1
           hs.timer.doAfter(0.2, function()
@@ -390,7 +402,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
           mouseKeyWaitTimer = hs.timer.doAfter(0.5, function()
             mouseKeyWaitTimer = nil
           end)
-          if event:getFlags().shift then
+          if modifiers.shift then
             isShiftPressed = true
           end
         end
@@ -400,7 +412,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
           mouseKeyWaitTimer = nil
 
           -- 即座にキーを離した場合に通常のセミコロンのキーイベントを発生させる
-          local mods = (isShiftPressed or event:getFlags().shift) and {"shift"} or {}
+          local mods = (isShiftPressed or modifiers.shift) and {"shift"} or {}
           local eventDown = hs.eventtap.event.newKeyEvent(mods, KeyCode.SEMICOLON, true)
           eventDown:setProperty(eventProps.eventSourceUserData, 1)
           eventDown:post()
@@ -430,7 +442,6 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   if mode == Mode.MOUSE_MOVE then
     processMouseKeys()
 
-    local modifiers = event:getFlags()
     if modifiers["ctrl"] and modifiers["cmd"] then
       resetMouseMode()
       return false
