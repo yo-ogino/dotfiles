@@ -96,8 +96,8 @@ local KeyCode = {
 }
 
 local MouseProp = {
-  INITIAL_SPEED = 1.6,
-  MAX_SPEED = 8,
+  INITIAL_SPEED = 1.2,
+  MAX_SPEED = 4,
   ACCELARATION_RATE = 1.02,
   BOOST_RATE = 1.5,
   SCROLL_SPEED = 12,
@@ -312,11 +312,11 @@ local function enableMouseMode()
     strokeWidth  = 0,  -- ボーダーの幅
     fillColor    = { white = 0, alpha = 0.7 },  -- 塗りつぶしの色
     textColor    = { white = 1, alpha = 0.9 },  -- テキストの色
-    textSize     = 14,  -- フォントサイズ
-    radius       = 10,  -- 角丸
+    textSize     = 18,  -- フォントサイズ
+    radius       = 8,  -- 角丸
     atScreenEdge = 1,  --  0: screen center (default); 1: top edge; 2: bottom edge
   }
-  , 600)
+  , 3600)
 end
 
 local function resetMouseMode()
