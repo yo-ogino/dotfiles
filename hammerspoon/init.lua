@@ -1,12 +1,15 @@
 local log = hs.logger.new('myLogger', 'debug')
 
 -- マウスカーソルをアクティブウインドウ上に移動する。skhdから呼んでいる
-hs.urlevent.bind("moveMouseToActiveWindow", function()
+local function moveMouseToActiveWindow()
   local win = hs.window.frontmostWindow()
   if win then
       local f = win:frame()
       hs.mouse.absolutePosition(hs.geometry.point(f.x + f.w * 0.9, f.y + f.h * 0.8))
   end
+end
+hs.urlevent.bind("moveMouseToActiveWindow", function()
+  moveMouseToActiveWindow()
 end)
 
 -- ウインドウの記憶&focus
@@ -25,6 +28,7 @@ for _, key in ipairs({"D", "1", "2", "3"}) do
     window = savedWindows[key]
     if window then
       window:focus()
+      moveMouseToActiveWindow()
     else
       hs.alert.show("No saved window")
     end
