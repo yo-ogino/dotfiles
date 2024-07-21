@@ -333,6 +333,7 @@ end
 
 local mouseKeyWaitTimer = nil
 local isShiftPressed = false -- 普通にカンマを入力したいときのためにshiftを直前に押したか状態管理
+local clickState = 1
 mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp}, function(event)
   local keyCode = event:getKeyCode()
   local keyPressed = event:getType() == hs.eventtap.event.types.keyDown
@@ -347,9 +348,14 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
       -- 左クリック
       if key == "LEFT_CLICK" then
         if keyPressed then
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, hs.mouse.absolutePosition()):post()
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, hs.mouse.absolutePosition()):setProperty(eventProps.mouseEventClickState, clickState):post()
         else
-          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, hs.mouse.absolutePosition()):post()
+          hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, hs.mouse.absolutePosition()):setProperty(eventProps.mouseEventClickState, clickState):post()
+          -- ダブルクリック扱いするためにclickStateをカウントアップする必要があるらしい
+          clickState = clickState + 1
+          hs.timer.doAfter(0.2, function()
+            clickState = 1
+          end)
         end
 
       -- 右クリック
