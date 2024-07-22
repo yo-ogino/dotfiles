@@ -206,7 +206,7 @@ lastKeyPressedAt = 0
 function drawMouseCircle()
   mousepoint = hs.mouse.absolutePosition()
   mouseCircle = hs.drawing.circle(hs.geometry.rect(mousepoint.x-40, mousepoint.y-40, 80, 80))
-  mouseCircle:setFillColor({ red=0.7,green=0.9,blue=1,alpha=0.2 })
+  mouseCircle:setFillColor({ red=0.5,green=0.5,blue=0.5,alpha=0.2 })
   mouseCircle:setFill(true)
   mouseCircle:setStroke(false)
   mouseCircle:show()
