@@ -395,8 +395,18 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
           hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseUp, hs.mouse.absolutePosition(), 2):post()
         end
 
+      -- WARPモードに入ったときにマウスを中央に移動する
+      elseif key == "WARP" then
+        if keyPressed then
+          local currentWindow = hs.window.focusedWindow()
+          if currentWindow then
+            local frame = currentWindow:frame()
+            hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.5})
+          end
+        end
+
       -- gg, Gなどの一発スクロール系
-      elseif not mouseKeysPressed.WARP then
+      else
         if keyPressed and key == "G" then
           if modifiers.shift then -- G（最下部へ）
             hs.eventtap.event.newScrollEvent({0, 100000}, {}, 'pixel'):post()
