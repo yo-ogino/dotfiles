@@ -200,6 +200,36 @@ local function resetMouseKeysPressed()
   end
 end
 
+-- マウスモードであることを明示するためのカーソル強調表示
+mouseCircle = nil
+lastKeyPressedAt = 0
+function drawMouseCircle()
+  mousepoint = hs.mouse.absolutePosition()
+  mouseCircle = hs.drawing.circle(hs.geometry.rect(mousepoint.x-40, mousepoint.y-40, 80, 80))
+  mouseCircle:setFillColor({ red=0.7,green=0.9,blue=1,alpha=0.2 })
+  mouseCircle:setFill(true)
+  mouseCircle:setStroke(false)
+  mouseCircle:show()
+end
+function deleteMouseCircle()
+  if mouseCircle then
+    mouseCircle:delete()
+    mouseCircle = nil
+  end
+end
+function updateLastKeyPressedAt()
+  lastKeyPressedAt = os.time()
+  deleteMouseCircle()
+end
+function drawMouseCircleOnIdle()
+  local now = os.time()
+  if (now - lastKeyPressedAt) >= 0.5 then
+    if not mouseCircle then
+      drawMouseCircle()
+    end
+  end
+end
+
 -- マウスの位置などを更新するTimer（eventtap内でやると連続入力時に遅延が発生するため、Timerを動かす）
 local moveMouseTimer = hs.timer.new(0.01, function()
   if mouseKeysPressed.WARP then
@@ -306,6 +336,9 @@ local mouseFocusTimer = hs.timer.new(0.5, function()
     if window then
       window:focus()
     end
+
+    -- アイドル状態でマウスカーソルを目立たせるための処理相乗り
+    drawMouseCircleOnIdle()
 end)
 
 local function enableMouseMode()
@@ -333,6 +366,7 @@ local function resetMouseMode()
   mouseSpeed = MouseProp.INITIAL_SPEED
   resetMouseKeysPressed()
   isShiftPressed = false
+  deleteMouseCircle()
 
   hs.alert.closeAll()
   hs.alert.show("Mouse mode finished", { fillColor={red=0.8,green=0.2,blue=0.1,alpha=0.4} }, 1)
@@ -362,6 +396,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
 
   local function processMouseKeys()
     updateMouseKeysPressed(event)
+    updateLastKeyPressedAt()
 
     -- 移動やスクロールではなく単押し系はここで処理
     if repeating == 0 then
@@ -401,7 +436,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
           local currentWindow = hs.window.focusedWindow()
           if currentWindow then
             local frame = currentWindow:frame()
-            hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.5})
+            hs.mouse.absolutePosition({x = frame.x + frame.w * 0.9, y = frame.y + frame.h * 0.8})
           end
         end
 
