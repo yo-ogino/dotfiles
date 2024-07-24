@@ -514,7 +514,7 @@ mouseKeysTap = hs.eventtap.new({hs.eventtap.event.types.keyDown, hs.eventtap.eve
   if mode == Mode.MOUSE_MOVE then
     processMouseKeys()
 
-    if modifiers["ctrl"] and modifiers["cmd"] then
+    if modifiers.ctrl or modifiers.cmd then
       resetMouseMode()
       return false
     end
