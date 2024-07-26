@@ -183,15 +183,24 @@ local function updateMouseKeysPressed(event)
   end
 end
 
--- いずれかのMouseKeyが押されているか
+-- いずれかのMouseKeyが押されているか（eventが渡されたらeventベース、渡されなかったらmouseKeysPressedの状態で判定）
 local function isAnyMouseKeyPressed(event)
-  local mouseKeyName = getMouseKeyName(event:getKeyCode())
+  if event then
+    local mouseKeyName = getMouseKeyName(event:getKeyCode())
 
-  if mouseKeyName ~= nil and event:getType() == hs.eventtap.event.types.keyDown then
-    return true
+    if mouseKeyName ~= nil and event:getType() == hs.eventtap.event.types.keyDown then
+      return true
+    end
+
+    return false
+  else
+    for _, value in pairs(mouseKeysPressed) do
+      if value then
+        return true
+      end
+    end
+    return false
   end
-
-  return false
 end
 
 local function resetMouseKeysPressed()
@@ -232,6 +241,10 @@ end
 
 -- マウスの位置などを更新するTimer（eventtap内でやると連続入力時に遅延が発生するため、Timerを動かす）
 local moveMouseTimer = hs.timer.new(0.01, function()
+  if not isAnyMouseKeyPressed() then
+    return
+  end
+
   if mouseKeysPressed.WARP then
       local currentWindow = hs.window.focusedWindow()
       if currentWindow then
@@ -311,6 +324,7 @@ local moveMouseTimer = hs.timer.new(0.01, function()
         mouseSpeed = MouseProp.INITIAL_SPEED
     end
     hs.mouse.absolutePosition(currentPos)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.mouseMoved, hs.mouse.absolutePosition()):post()
 
     -- 左クリック中はドラッグイベントを発生させる
     if mouseKeysPressed.LEFT_CLICK then
