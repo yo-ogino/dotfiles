@@ -251,15 +251,15 @@ local moveMouseTimer = hs.timer.new(0.01, function()
         local frame = currentWindow:frame()
 
         if mouseKeysPressed.Q then -- TOP LEFT EDGE
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.02, y = frame.y + frame.h * 0.15})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.02, y = frame.y + frame.h * 0.05})
         elseif mouseKeysPressed.W then -- TOP LEFT
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.25, y = frame.y + frame.h * 0.15})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.25, y = frame.y + frame.h * 0.05})
         elseif mouseKeysPressed.UP then -- TOP CENTER
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.15})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.05})
         elseif mouseKeysPressed.R then -- TOP RIGHT
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.75, y = frame.y + frame.h * 0.15})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.75, y = frame.y + frame.h * 0.05})
         elseif mouseKeysPressed.T then -- TOP RIGHT EDGE
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.98, y = frame.y + frame.h * 0.15})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.98, y = frame.y + frame.h * 0.05})
         elseif mouseKeysPressed.A then -- LEFT EDGE
           hs.mouse.absolutePosition({x = frame.x + frame.w * 0.02, y = frame.y + frame.h * 0.5})
         elseif mouseKeysPressed.LEFT then -- LEFT
@@ -271,15 +271,15 @@ local moveMouseTimer = hs.timer.new(0.01, function()
         elseif mouseKeysPressed.G then -- RIGHT EDGE
           hs.mouse.absolutePosition({x = frame.x + frame.w * 0.98, y = frame.y + frame.h * 0.5})
         elseif mouseKeysPressed.Z then -- BOTTOM LEFT EDGE
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.02, y = frame.y + frame.h * 0.9})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.02, y = frame.y + frame.h * 0.95})
         elseif mouseKeysPressed.X then  -- BOTTOM LEFT
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.25, y = frame.y + frame.h * 0.9})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.25, y = frame.y + frame.h * 0.95})
         elseif mouseKeysPressed.C then -- BOTTOM CENTER
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.9})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.5, y = frame.y + frame.h * 0.95})
         elseif mouseKeysPressed.V then -- BOTTOM RIGHT
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.75, y = frame.y + frame.h * 0.9})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.75, y = frame.y + frame.h * 0.95})
         elseif mouseKeysPressed.B then -- BOTTOM RIGHT EDGE
-          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.98, y = frame.y + frame.h * 0.9})
+          hs.mouse.absolutePosition({x = frame.x + frame.w * 0.98, y = frame.y + frame.h * 0.95})
         end
     end
   else
