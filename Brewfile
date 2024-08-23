@@ -1,18 +1,15 @@
-cask_args appdir: "~/Applications"
+cask_args appdir: '~/Applications'
 
-brew "tmux"
-brew "hub"
-brew "tree"
-brew "squid"
-brew "nkf"
+brew 'hub'
+brew 'tree'
+brew 'nkf'
 
-brew "postgresql"
+brew 'postgresql'
 
-brew "rbenv"
-brew "ruby-build"
-brew "goenv"
-brew "nodenv"
+brew 'rbenv'
+brew 'ruby-build'
+brew 'goenv'
+brew 'nodenv'
 
-cask "visual-studio-code"
-cask "google-cloud-sdk"
-
+cask 'visual-studio-code'
+cask 'google-cloud-sdk'
