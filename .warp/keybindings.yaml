@@ -1,0 +1,12 @@
+---
+"editor_view:backspace": none
+"editor_view:cut_all_right": none
+"input:clear_screen": none
+"editor_view:insert_newline": none
+"terminal:scroll_to_bottom_of_selected_block": ctrl-shift-J
+"pane_group:navigate_prev": ctrl-alt-shift-cmd-H
+"terminal:scroll_up_one_line": ctrl-k
+"terminal:scroll_down_one_line": ctrl-j
+"pane_group:navigate_next": ctrl-l
+"terminal:scroll_to_top_of_selected_block": ctrl-shift-K
+"workspace:show_theme_chooser": none
