@@ -8,4 +8,4 @@ ln -s $DIR/.tmux.conf $HOME/.tmux.conf
 ln -s $DIR/.gitconfig $HOME/.gitconfig
 ln -s $DIR/Brewfile $HOME/Brewfile
 ln -s $DIR/.aerospace $HOME/.aerospace
-mkdir -p $HOME/.hammerspoon && ln -s $DIR/hammerspoon/init.lua $HOME/.hammerspoon/init.lua
+mkdir -p $HOME/.hammerspoon && ln -s $DIR/.hammerspoon/init.lua $HOME/.hammerspoon/init.lua
