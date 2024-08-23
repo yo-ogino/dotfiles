@@ -14,3 +14,6 @@ brew 'nodenv'
 
 cask 'visual-studio-code'
 cask 'google-cloud-sdk'
+
+brew 'koekeishiya/formulae/skhd'
+cask 'nikitabobko/tap/aerospace'
