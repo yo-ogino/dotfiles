@@ -24,6 +24,9 @@ setopt nonomatch
 # Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# MacVim
+alias vim='vim -v'
+
 # Ruby
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"

@@ -1,5 +1,6 @@
 cask_args appdir: '~/Applications'
 
+brew 'macvim'
 brew 'hub'
 brew 'tree'
 brew 'nkf'
