@@ -17,3 +17,4 @@ cask 'google-cloud-sdk'
 
 brew 'koekeishiya/formulae/skhd'
 cask 'nikitabobko/tap/aerospace'
+cask 'hammerspoon'
