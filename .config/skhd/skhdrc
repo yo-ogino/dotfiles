@@ -1,0 +1,122 @@
+# activate application
+# ctrl + cmd - g : osascript -e 'tell application "Google Chrome" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - t : osascript -e 'tell application "Warp" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - r : osascript -e 'tell application "Code" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - s : osascript -e 'tell application "Slack" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - e : osascript -e 'tell application "Notion" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - w : osascript -e 'tell application "Obsidian" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - c : osascript -e 'tell application "Code" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - q : osascript -e 'tell application "ChatGPT" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - f : osascript -e 'tell application "Finder" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + cmd - g : osascript -e 'tell application "Arc" to activate' && open -g 'hammerspoon://moveMouseToActiveWindow'
+
+## focus window
+ctrl + lcmd - h : aerospace focus left && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + lcmd - j : aerospace focus down && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + lcmd - k : aerospace focus up && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + lcmd - l : aerospace focus right && open -g 'hammerspoon://moveMouseToActiveWindow'
+
+ctrl + alt - h : aerospace focus-monitor left && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + alt - j : aerospace focus-monitor down && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + alt - k : aerospace focus-monitor up && open -g 'hammerspoon://moveMouseToActiveWindow'
+ctrl + alt - l : aerospace focus-monitor right && open -g 'hammerspoon://moveMouseToActiveWindow'
+
+# move window
+ctrl + lcmd + rcmd - h : aerospace move left
+ctrl + lcmd + rcmd - j : aerospace move down
+ctrl + lcmd + rcmd - k : aerospace move up
+ctrl + lcmd + rcmd - l : aerospace move right
+
+ctrl + alt + rcmd - h : aerospace move-node-to-monitor left
+ctrl + alt + rcmd - j : aerospace move-node-to-monitor down
+ctrl + alt + rcmd - k : aerospace move-node-to-monitor up
+ctrl + alt + rcmd - l : aerospace move-node-to-monitor right
+
+# layout window
+ctrl + lcmd - y : aerospace layout floating tiling
+ctrl + lcmd - u : aerospace flatten-workspace-tree
+ctrl + lcmd - i : aerospace layout horizontal vertical
+ctrl + lcmd - o : aerospace layout tiles accordion
+
+# join window container
+ctrl + lcmd + shift - h : aerospace join-with left
+ctrl + lcmd + shift - j : aerospace join-with down
+ctrl + lcmd + shift - k : aerospace join-with up
+ctrl + lcmd + shift - l : aerospace join-with right
+
+# resize window
+ctrl + lcmd - 0x2B : aerospace resize smart -240
+ctrl + lcmd - 0x2F : aerospace resize smart +240
+
+# close window
+ctrl + cmd + shift - w : aerospace close --quit-if-last-window
+
+#########################
+# for yabai (deprecated)
+#########################
+
+## change layout
+#ctrl + cmd + shift - f : yabai -m window --toggle float
+#
+## focus window
+#ctrl + lcmd - h : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --focus west; \
+#       else yabai -m window --focus recent; fi
+#ctrl + lcmd - j : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --focus south; \
+#       else yabai -m window --focus recent; fi
+#ctrl + lcmd - k : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --focus north; \
+#       else yabai -m window --focus recent; fi
+#ctrl + lcmd - l : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --focus east; \
+#       else yabai -m window --focus recent; fi
+#ctrl + lcmd - 0x29 : yabai -m window --focus last # ;
+#
+## move window
+#ctrl + lcmd + rcmd - h : yabai -m window --swap west
+#ctrl + lcmd + rcmd - j : yabai -m window --swap south
+#ctrl + lcmd + rcmd - k : yabai -m window --swap north
+#ctrl + lcmd + rcmd - l : yabai -m window --swap east
+#
+#ctrl + lcmd + shift - h : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --warp west; \
+#       else yabai -m window --grid 1:4:0:0:1:1; fi
+#ctrl + lcmd + shift - j : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --warp south; \
+#       else yabai -m window --grid 1:4:1:0:1:1; fi
+#ctrl + lcmd + shift - k : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --warp north; \
+#       else yabai -m window --grid 1:4:2:0:1:1; fi
+#ctrl + lcmd + shift - l : if [ "$(yabai -m query --windows --window | jq -r '."is-floating"')" = false ]; \
+#       then yabai -m window --warp east; \
+#       else yabai -m window --grid 1:4:3:0:1:1; fi
+#
+#ctrl + lcmd + shift - u : yabai -m window --grid 1:3:0:0:1:1
+#ctrl + lcmd + shift - i : yabai -m window --grid 1:3:1:0:1:1
+#ctrl + lcmd + shift - o : yabai -m window --grid 1:3:2:0:1:1
+#
+## re-layout window
+#ctrl + cmd - i : yabai -m window --toggle split
+#ctrl + cmd - u : yabai -m space --balance
+#
+## zoom window
+#ctrl + lcmd - p : yabai -m window --toggle zoom-parent
+#ctrl + lcmd + rcmd - p : yabai -m window --toggle zoom-fullscreen
+#
+## minimize/close window
+#ctrl + cmd + shift - m : yabai -m window --minimize && yabai -m window --focus recent
+#ctrl + cmd + shift - w : yabai -m window --close && yabai -m window --focus recent
+#
+## stack
+#ctrl + alt - h : yabai -m window --stack west
+#ctrl + alt - j : yabai -m window --stack south
+#ctrl + alt - k : yabai -m window --stack north
+#ctrl + alt - l : yabai -m window --stack east
+#
+## focus stack
+#ctrl + cmd - m : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+#ctrl + cmd - v : yabai -m window --focus stack.next || yabai -m window --focus stack.first
+#
+## unstack
+#ctrl + alt - u : yabai -m window --toggle float && yabai -m window --toggle float
