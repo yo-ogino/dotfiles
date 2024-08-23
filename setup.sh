@@ -8,15 +8,5 @@ ln -s $DIR/.zshrc $HOME/.zshrc
 ln -s $DIR/.tmux.conf $HOME/.tmux.conf
 ln -s $DIR/.gitconfig $HOME/.gitconfig
 ln -s $DIR/Brewfile $HOME/Brewfile
-
-# todo aerospaceとhammerspoonのinitをlnする
-
-#git clone --recursive https://github.com/yo-ogino/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-
-#sudo cp tmuxx /usr/local/bin/
-
-#if [ `uname` = "Darwin" ]; then
-#  sudo cp tmux-pbcopy /usr/local/bin/
-#elif [ `uname` = "Linux" ]; then
-#  sudo cp tmux-pbcopy_ubuntu /usr/local/bin/
-#fi
+ln -s $DIR/.aerospace $HOME/.aerospace
+mkdir -p $HOME/.hammerspoon && ln -s $DIR/hammerspoon/init.lua $HOME/.hammerspoon/init.lua
