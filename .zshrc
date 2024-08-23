@@ -1,5 +1,3 @@
-[ -f ~/.zprezto/runcoms/zshrc ] && source ~/.zprezto/runcoms/zshrc
-
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
 
@@ -100,9 +98,3 @@ eval "$(nodenv init -)"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/yo_ogino/.sdkman"
 [[ -s "/Users/yo_ogino/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/yo_ogino/.sdkman/bin/sdkman-init.sh"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yo_ogino/tmpwrk/tsugimanga2021/summarize/google-cloud-sdk/completion.zsh.inc'; fi
